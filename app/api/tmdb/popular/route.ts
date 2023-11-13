@@ -1,4 +1,4 @@
-import { MOVIEDB } from "$app/server/tmdb/index";
+import { MOVIEDB } from "../../../server/tmdb/index";
 
 export async function GET() {
   let result;
@@ -10,6 +10,7 @@ export async function GET() {
   .catch(console.error)
 
   return Response.json({
+		status: 200,
     result,
   });
 }
