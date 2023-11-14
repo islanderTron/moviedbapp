@@ -1,37 +1,39 @@
-import { useEffect } from "react";
-import Image from 'next/image';
+"use client"
 
+import * as dotenv from 'dotenv';
+dotenv.config()
 
-// Might have to reinstall next.js but without `src` - this might be the reason why it's not working with async/await on client side. The `src` folder is static app which means that they do not communciate with server side at all. 
-async function getData() {
-	const res = await fetch('http://localhost:3000/api/tmdb/popular')
-	if(!res.ok) {
-		throw new Error('failed fetch data')
-	}
-	return res.json()
-}
-export default async function Home() {
-	const data = await getData();
-	console.log(data.result.results);
-	// Build a image URL
-	// https://developer.themoviedb.org/docs/image-basics
+import { useEffect, useState } from 'react';
+
+export default function Home() {
+	const [popular, setPopular] = useState(null)
+	const [isLoading, setLoading] = useState(true)
 	
-  return (
+	useEffect(() => {
+		fetch('/api/tmdb/popular')
+			.then((res) => res.json())
+			.then((res) => {
+				console.log(res);
+				
+				setPopular(res.result.results)
+				setLoading(false)
+			})
+	},[])
+
+	console.log(typeof popular); // weird 
+	
+	// Need to figure out how to handle with the state outside render function. Look at your old repo and it might help you to refresh your mind. 
+	if(isLoading) return <p>loading...</p>
+	if(!popular) return <p>uh oh</p>
+
+  return ( 
 		<main>
 			Home page
-			{/* {data.result.results.map((res: any) => {
-				return (
-					<div key={res.id}>
-						<p>name: {res.title} </p>
-						<Image 
-							src={res.backdrop_path} 
-							width={100}
-							height={100}
-							alt={res.title}
-						/>
-					</div>
-				)
-			})} */}
+			<div>
+				{
+					popular[0].title
+				}
+			</div>
 		</main>
 	)
 }
