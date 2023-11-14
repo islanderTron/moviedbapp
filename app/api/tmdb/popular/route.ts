@@ -1,8 +1,8 @@
 import { MOVIEDB } from "../../../server/tmdb/index";
 
 export async function GET() {
-  let result;
-  
+  let result;  
+
   await MOVIEDB.moviePopular()
   .then((res: any) => {
     result = res;

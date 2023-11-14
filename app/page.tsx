@@ -10,15 +10,16 @@ async function getData() {
 	}
 	return res.json()
 }
-// eslint-disable-next-line @next/next/no-async-client-component
 export default async function Home() {
 	const data = await getData();
-	// console.log(data.result.results);
+	console.log(data.result.results);
+	// Build a image URL
+	// https://developer.themoviedb.org/docs/image-basics
 	
   return (
 		<main>
 			Home page
-			{data.result.results.map((res: any) => {
+			{/* {data.result.results.map((res: any) => {
 				return (
 					<div key={res.id}>
 						<p>name: {res.title} </p>
@@ -30,7 +31,7 @@ export default async function Home() {
 						/>
 					</div>
 				)
-			})}
+			})} */}
 		</main>
 	)
 }
