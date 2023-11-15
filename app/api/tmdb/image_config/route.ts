@@ -4,9 +4,7 @@ import { MOVIEDB } from "@/server/tmdb";
 
 export async function GET() {
 	const image_config = await MOVIEDB.configuration();
-	// https://image.tmdb.org/t/p/w92/NNxYkU70HPurnNCSiCjYAmacwm.jpg
-	console.log(image_config);
-	
+	// Example: https://image.tmdb.org/t/p/w92/NNxYkU70HPurnNCSiCjYAmacwm.jpg
 	let url_path = image_config.images.base_url + '/original'
 	
 	// After get the data, set the object what you want to give to display the movie.

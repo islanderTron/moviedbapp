@@ -1,77 +1,59 @@
-"use client"
+"use client";
 
-import * as dotenv from 'dotenv';
-dotenv.config()
+import * as dotenv from "dotenv";
+dotenv.config();
 
-import { useEffect, useState } from 'react';
+import Card from "$app/components/card";
 
+import { useEffect, useState } from "react";
 export default function Home() {
-	const [popular, setPopular] = useState(null)
-	const [isLoading, setLoading] = useState(true)
+  const [popular, setPopular] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
-	const [imageURL, setImageURL] = useState('');
-	
-	// Lifecycle methods
-	useEffect(() => {
-		getData();
-		getImagePath()
-	},[])
+  const [imageURL, setImageURL] = useState("");
 
-	// HTTP methods
-	function getData() {
-		return fetch('/api/tmdb/popular')
-			.then((res) => res.json())
-			.then((res) => {
-				setPopular(res.result.results)
-				setLoading(false)
-			})
-	}
+  // Lifecycle methods
+  useEffect(() => {
+    getData();
+    getImagePath();
+  }, []);
 
-	function getImagePath() {
-		return fetch('/api/tmdb/image_config')
-			.then((res) => res.json())
-			.then((res) => {
-				console.log(res);
-				setImageURL(res.url_path)
-			})
-	}
-	// Render methods
-	function popularRender() {
-		if(popular) {
-			const test = [popular];
-			console.log(test);
-			
-			return (
+  // HTTP methods
+  function getData() {
+    return fetch("/api/tmdb/popular")
+      .then((res) => res.json())
+      .then((res) => {
+        setPopular(res.result.results);
+        setLoading(false);
+      });
+  }
+
+  function getImagePath() {
+    return fetch("/api/tmdb/image_config")
+      .then((res) => res.json())
+      .then((res) => {
+        setImageURL(res.url_path);
+      });
+  }
+  // Render methods
+  function popularRender() {
+    if (popular) {
+      return <Card popular={popular} imageURL={imageURL} />;
+    }
+  }
+
+  if (isLoading) return <p>loading...</p>;
+  if (!popular) return <p>uh oh</p>;
+
+  else {
+    return (
+      <main>
+        Home page
+        {/* {popularRender()} */}
 				<div>
-					{/* {test.map(data => {
-						<p>hi</p>
-					})} */}
+					<button className="btn">Button</button>
 				</div>
-			)
-		}
-	}
-	
-	// Need to figure out how to handle with the state outside render function. Look at your old repo and it might help you to refresh your mind. 
-	if(isLoading) return <p>loading...</p>
-	if(!popular) return <p>uh oh</p>
-	else {
-		return ( 
-			<main>
-				Home page
-				test 
-				{popularRender()}
-				<div>
-					{
-						// need to describe the type of this data but the result look fine as usual
-						popular.map((data: any) => 
-							<div>
-								<p key={data.title}>{data.title}</p>
-								<img src={`${imageURL}/${data.poster_path}`} />
-							</div>
-						)
-					}
-				</div>
-			</main>
-		)
-	}
+      </main>
+    );
+  }
 }
