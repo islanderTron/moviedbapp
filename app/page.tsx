@@ -3,7 +3,8 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import Card from "$app/components/card";
+import Navbar from "./components/navbar/page";
+import Card from "./components/card/page";
 
 import { useEffect, useState } from "react";
 export default function Home() {
@@ -44,15 +45,14 @@ export default function Home() {
 
   if (isLoading) return <p>loading...</p>;
   if (!popular) return <p>uh oh</p>;
-
   else {
     return (
       <main>
-        Home page
-        {/* {popularRender()} */}
-				<div>
-					<button className="btn">Button</button>
-				</div>
+        <Navbar />
+        <div className="container mx-auto">
+          {popularRender()}
+
+        </div>
       </main>
     );
   }
