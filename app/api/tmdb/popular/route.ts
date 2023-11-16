@@ -1,16 +1,16 @@
-import { MOVIEDB } from "@/server/tmdb";
+import { MOVIEDB } from "@/app/server/tmdb";
 
 export async function GET() {
-	let result; 
+  let result;
 
-	await MOVIEDB.moviePopular()
-		.then((res: any) => {
-			result = res
-		})
-		.catch(console.error)	
+  await MOVIEDB.moviePopular()
+    .then((res: any) => {
+      result = res;
+    })
+    .catch(console.error);
 
   return Response.json({
-		status: 200,
-		result
+    status: 200,
+    result,
   });
 }
