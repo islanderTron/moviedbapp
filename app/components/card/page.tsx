@@ -12,7 +12,16 @@ export default function Card(props: any) {
             className="card card-compact w-96 bg-base-100 shadow-xl"
           >
             <figure>
-              <img src={`${imageURL}/${data.backdrop_path}`} alt="Shoes" />
+							<picture>
+								<source 
+									srcSet={`${imageURL}/${data.poster_path}`} 
+									type='image'
+								/>
+								<img
+									src={`${imageURL}/${data.poster_path}`}
+									alt={data.title}
+								/>
+							</picture>
             </figure>
             <div className="card-body">
               <h2 className="card-title">{data.title}</h2>
