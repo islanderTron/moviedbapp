@@ -15,18 +15,19 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [popular, setPopular] = useState(null);
+  const [trending, setTrending] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
   const [imageURL, setImageURL] = useState("");
 
   // Lifecycle methods
   useEffect(() => {
-    getData();
+    getPopularData();
     getImagePath();
   }, []);
 
   // HTTP methods
-  function getData() {
+  function getPopularData() {
     // DEV Mode
     setPopular(test.results);
 
@@ -64,7 +65,21 @@ export default function Home() {
 					<span className="loading primary-content  loading-spinner loading-lg"></span>
 				} */}
 
-        {popularRender()}
+        <div>
+          <div>
+            <div className="">
+              <p className="text-2xl">Most Popular Movies in the U.S.</p>
+            </div>
+            {popularRender()}
+          </div>
+
+          <div>
+            <div>
+              <p className="text-2xl">Trending this week</p>
+            </div>
+
+          </div>
+        </div>
       </div>
     </main>
   );
