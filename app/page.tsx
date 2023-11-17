@@ -16,28 +16,65 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [popular, setPopular] = useState(null);
   const [trending, setTrending] = useState(null);
+  const [upcoming, setUpcoming] = useState(null);
+  const [toprated, setTopRated] = useState(null);
+
   const [isLoading, setLoading] = useState(true);
 
   const [imageURL, setImageURL] = useState("");
 
+	const [apiCalled, setApi] = useState(false)
+
   // Lifecycle methods
   useEffect(() => {
-    getPopularData();
-    getImagePath();
-  }, []);
+		if(!apiCalled) {
+			getTrendingData();
+			setApi(true)
+		}
+    // getPopularData();
+    // getImagePath();
+		// getUpcomingData();
+		// getTopratedData();
+  }, [apiCalled]);
 
   // HTTP methods
   function getPopularData() {
     // DEV Mode
-    setPopular(test.results);
+    // setPopular(test.results);
 
-    // return fetch("/api/tmdb/popular")
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     setPopular(res.result.results);
-    //     setLoading(false);
-    // });
+    return fetch("/api/tmdb/popular")
+      .then((res) => res.json())
+      .then((res) => {
+        setPopular(res.result.results);
+        // setLoading(false);
+    });
   }
+
+	async function getTrendingData() {
+		return await fetch('/api/tmdb/trending', {
+			cache: 'no-cache'
+		})
+			.then((res) => res.json())
+			.then((res) => {
+				setTrending(res.result.results)
+			})
+	}
+
+	function getUpcomingData() {
+		return fetch('/api/tmdb/upcoming')
+			.then((res) => res.json())
+			.then((res) => {
+				return setUpcoming(res.result.results)
+			})
+	}
+
+	function getTopratedData() {
+		return fetch('/api/tmdb/top_rated')
+			.then((res) => res.json())
+			.then((res) => {
+				return setTopRated(res.result.results)
+			})
+	}
 
   function getImagePath() {
     // DEV mode
@@ -51,33 +88,72 @@ export default function Home() {
     //   });
   }
   // Render methods
-  function popularRender() {
-    if (popular) {
-      return <Carousel popular={popular} imageURL={imageURL} />;
-    }
-  }
+  // function popularRender() {
+  //   if (popular) {
+  //     return <Carousel popular={popular} imageURL={imageURL} />;
+  //   }
+  // }
+
+	console.log(trending);
+	
 
   return (
     <main>
-      <Navbar />
+      <Navbar imageURL={imageURL} />
       <div className="mx-auto">
         {/* {isLoading && 
 					<span className="loading primary-content  loading-spinner loading-lg"></span>
 				} */}
 
+				{/* Most Popular */}
+        <div>
+          <div>
+            <div className="bg-neutral text-neutral-content bg-base-100">
+              <p className="text-2xl">Most Popular Movies in the U.S.</p>
+            </div>
+						
+						{popular && 
+            	<Carousel popular={popular} imageURL={imageURL} />
+						}
+          </div>
+        </div>
+				
+				{/* Trending */}
         <div>
           <div>
             <div className="">
-              <p className="text-2xl">Most Popular Movies in the U.S.</p>
+              <p className="text-2xl">Trending</p>
             </div>
-            {popularRender()}
+						
+						{trending && 
+            	<Carousel popular={trending} imageURL={imageURL} />
+						}
           </div>
+        </div>
 
+				{/* Upcoming */}
+        <div>
           <div>
-            <div>
-              <p className="text-2xl">Trending this week</p>
+            <div className="">
+              <p className="text-2xl">Upcoming</p>
             </div>
+						
+						{upcoming && 
+            	<Carousel popular={upcoming} imageURL={imageURL} />
+						}
+          </div>
+        </div>
 
+				{/* Top Rated */}
+        <div>
+          <div>
+            <div className="">
+              <p className="text-2xl">Top Rated</p>
+            </div>
+						
+						{toprated && 
+            	<Carousel popular={toprated} imageURL={imageURL} />
+						}
           </div>
         </div>
       </div>
