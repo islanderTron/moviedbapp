@@ -5,7 +5,7 @@ dotenv.config();
 
 import { useEffect, useState } from "react";
 
-// Componemts 
+// Componemts
 import Navbar from "./components/navbar/page";
 import Card from "./components/card/page";
 import Carousel from "./components/carousel/page";
@@ -16,7 +16,6 @@ import { providerListComma } from "./helper";
 // DEV Mode
 import test from "./server/tmdb/example/popular.json";
 import dev_image_path from "./server/tmdb/example/file_config.json";
-
 
 export default function Home() {
   const [popular, setPopular] = useState(null);
@@ -55,23 +54,23 @@ export default function Home() {
   }
 
   async function getDiscovery() {
-    let list = providerListComma(providers)
+    let list = providerListComma(providers);
 
     return fetch(`/api/tmdb/discover?providers=${list}`)
       .then((res) => res.json())
       .then((res) => {
-        return setDiscovery(res.response.results)
+        return setDiscovery(res.response.results);
       })
       .catch((err) => console.error(err));
   }
 
   function getPopularData() {
+    return setPopular(test.results)
     return fetch("/api/tmdb/popular")
       .then((res) => res.json())
       .then((res) => {
         setPopular(res.result.results);
         console.log(popular);
-        
       });
   }
 
@@ -116,65 +115,15 @@ export default function Home() {
   return (
     <main>
       <Navbar providers={providers} imageURL={imageURL} />
-      <div className="mx-auto">
-        {/* {isLoading && 
-					<span className="loading primary-content  loading-spinner loading-lg"></span>
-				} */}
-        {/* <div>
+      <div>
           <div>
             <div className="">
               <p className="text-2xl">Discovery</p>
             </div>
 
-            {discovery && <Carousel popular={discovery} imageURL={imageURL} />}
-          </div>
-        </div> */}
-
-        {/* Most Popular */}
-        <div>
-          <div>
-            <div className="">
-              <p className="text-2xl">Most Popular Movies in the U.S.</p>
-            </div>
-
-            {popular && <Carousel popular={popular} imageURL={imageURL} />}
+            {discovery && <Carousel data={discovery} imageURL={imageURL} />}
           </div>
         </div>
-
-        {/* Trending */}
-        {/* <div>
-          <div>
-            <div className="">
-              <p className="text-2xl">Trending</p>
-            </div>
-
-            {trending && <Carousel popular={trending} imageURL={imageURL} />}
-          </div>
-        </div> */}
-
-        {/* Upcoming */}
-        {/* <div>
-          <div>
-            <div className="">
-              <p className="text-2xl">Upcoming</p>
-            </div>
-
-            {upcoming && <Carousel popular={upcoming} imageURL={imageURL} />}
-          </div>
-        </div> */}
-
-        {/* Top Rated */}
-        {/* <div>
-          <div>
-            <div className="">
-              <p className="text-2xl">Top Rated</p>
-            </div>
-
-            {toprated && <Carousel popular={toprated} imageURL={imageURL} />}
-          </div>
-        </div> */}
-
-      </div>
     </main>
   );
 }

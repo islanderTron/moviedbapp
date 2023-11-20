@@ -2,43 +2,26 @@
 
 export default function Carousel(props: any) {
   const { data, imageURL } = props;
-  console.log(data);
-  
 
-  // Event Handlers
-  function hoverOvereHandler(e) {
-    e.target.parentNode.parentNode.style.width = '30%'
-  }
-
-  function hoverLeaveHandler(e) {
-    e.target.parentNode.parentNode.style.width = '25%'
-  }
-
-  function modalHandler(id: number) {
-
-  }
-  
-  if(data) {
-    return (
-      <div className="carousel carousel-end w-full">
-        {data.map((data: any) => {
-          return (
-            <div
-              key={data.title}
-              id={data.id}
-              className="carousel-item w-1/4"
+  return (
+    <div className="carousel carousel-end w-full">
+      {data.map((data: any) => {
+        return (
+          <div
+            key={data.title}
+            id={data.id}
+            className="carousel-item w-1/4"
+          >
+            <picture
+              // onMouseOver={hoverOvereHandler}
+              // onMouseLeave={hoverLeaveHandler}
             >
-              <picture
-                // onMouseOver={hoverOvereHandler}
-                // onMouseLeave={hoverLeaveHandler}
-              >
-                <source srcSet={`${imageURL}/${data.poster_path}`} type="image" />
-                <img src={`${imageURL}/${data.poster_path}`} alt={data.title} />
-              </picture>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
+              <source srcSet={`${imageURL}/${data.poster_path}`} type="image" />
+              <img src={`${imageURL}/${data.poster_path}`} alt={data.title} />
+            </picture>
+          </div>
+        );
+      })}
+    </div>
+  );
 }

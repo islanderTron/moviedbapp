@@ -7,7 +7,7 @@ import { MOVIEDB } from "@/app/server/tmdb";
 import { convertCommantoL } from "@/app/helper";
 // https://developer.themoviedb.org/reference/discover-movie
 /*  page integer
- * results - array of objects
+ * results - array of objects: 
  * adult: boolean
  * backdrop_path: string
  * genre_ids: array of integers
@@ -24,7 +24,6 @@ import { convertCommantoL } from "@/app/helper";
  * vote_count: integer
  *	total_pages: integer
  * total_results: integer
- * /t/p/original/emthp39XA2YScoYL1p0sdbAH2WA.jpg
  **/
 export async function GET({url}): Promise<Response> {
 
