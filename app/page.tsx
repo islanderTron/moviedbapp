@@ -65,7 +65,6 @@ export default function Home() {
   }
 
   function getPopularData() {
-    return setPopular(test.results)
     return fetch("/api/tmdb/popular")
       .then((res) => res.json())
       .then((res) => {
@@ -116,14 +115,14 @@ export default function Home() {
     <main>
       <Navbar providers={providers} imageURL={imageURL} />
       <div>
-          <div>
-            <div className="">
-              <p className="text-2xl">Discovery</p>
-            </div>
-
-            {discovery && <Carousel data={discovery} imageURL={imageURL} />}
+        <div>
+          <div className="">
+            <p className="text-2xl">Discovery</p>
           </div>
+
+          {discovery && <Carousel data={discovery} imageURL={imageURL} />}
         </div>
+      </div>
     </main>
   );
 }
