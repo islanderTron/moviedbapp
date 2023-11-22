@@ -1,16 +1,39 @@
-export default function Modal({ movie, imageURL }) {
-	return (
-	<dialog id={`${movie.id}`} className="modal modal-top">
-		<div className="modal-box w-1/2 align-middle">
-			<h3 className="font-bold text-lg">Hello!</h3>
-			<p className="py-4">Click the button below to close</p>
-			<div className="modal-action">
-				<form method="dialog">
-					{/* if there is a button, it will close the modal */}
-					<button className="btn">Close</button>
-				</form>
-			</div>
-		</div>
-	</dialog>
-	)
+import { filterGenres } from "@/app/helper";
+
+export default function Modal({ movie, imageURL, genre }) {
+  let genres_list; 
+  
+  if(genre) {
+    genres_list = filterGenres(movie.genre_ids, genre);
+  }
+  
+  return (
+    <dialog id={`${movie.id}`} className="modal modal-top lg:mt-0 lg:mt-20 lg:modal-middle">
+      <div className="modal-box p-0 w-full max-w-5xl">
+        <form method="dialog">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <div>
+          <picture className="">
+            <source
+              srcSet={`${imageURL}/${movie.backdrop_path}`}
+              type="image"
+            />
+            <img src={`${imageURL}/${movie.backdrop_path}`} alt={movie.title} />
+          </picture>
+        </div>
+				<div className="p-2">
+					<p> Genres: </p>
+          {genres_list.map(genre => {
+            return(
+              <p className="badge badge badge-lg">{genre}</p>
+            )
+          })}
+				</div>
+        <p className="p-2">{movie.overview}</p>
+      </div>
+    </dialog>
+  );
 }

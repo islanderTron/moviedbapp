@@ -21,3 +21,16 @@ export function convertCommantoL (data) {
 
   return providers_arr;
 }
+
+export function filterGenres(movie_genres: any, genres: any) { 
+  let name_genres: any = [];
+
+  genres.filter((genre: any) => {
+    if(movie_genres.includes(genre.id)) {
+      name_genres.push(genre.name)
+      // console.log(genre.name);      
+    }
+  })
+  
+  return name_genres
+}

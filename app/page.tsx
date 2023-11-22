@@ -19,15 +19,10 @@ import dev_image_path from "./server/tmdb/example/file_config.json";
 
 export default function Home() {
   const [popular, setPopular] = useState(null);
-  const [trending, setTrending] = useState(null);
-  const [upcoming, setUpcoming] = useState(null);
-  const [toprated, setTopRated] = useState(null);
   const [providers, setProviders] = useState(null);
   const [discovery, setDiscovery] = useState(null);
-
-  const [isLoading, setLoading] = useState(true);
-
   const [imageURL, setImageURL] = useState("");
+  const [genre, setGenre] = useState();
 
   // Lifecycle methods
   useEffect(() => {
@@ -37,10 +32,7 @@ export default function Home() {
   useEffect(() => {
     getImagePath();
     getProvidersData();
-    // getTrendingData();
-    getPopularData();
-    // getUpcomingData();
-    // getTopratedData();
+    getGenresData();
   }, []);
 
   // HTTP methods
@@ -110,6 +102,15 @@ export default function Home() {
     //     setImageURL(res.url_path);
     //   });
   }
+
+  function getGenresData() {
+    return fetch("/api/tmdb/genre")
+      .then((res: any) => res.json())
+      .then((res: any) => {
+        setGenre(res.genres);
+      })
+      .catch((error: any) => console.error(error));
+  }
   // Render methods
   return (
     <main>
@@ -120,7 +121,7 @@ export default function Home() {
             <p className="text-2xl">Discovery</p>
           </div>
 
-          {discovery && <Carousel data={discovery} imageURL={imageURL} />}
+          {discovery && <Carousel data={discovery} imageURL={imageURL} genre={genre} />}
         </div>
       </div>
     </main>
