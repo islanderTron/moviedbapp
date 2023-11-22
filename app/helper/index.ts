@@ -34,3 +34,20 @@ export function filterGenres(movie_genres: any, genres: any) {
   
   return name_genres
 }
+
+export async function matchProvider(movie_providers) {
+  // Call API 
+
+  let res = await (await fetch('http:/localhost:3000/api/tmdb/providers')).json()
+  let test;
+  
+  res.providers_list.filter(x => {
+    movie_providers.flatrate.map( i => {
+      if(i.provider_id === x.provider_id) {
+        test = x
+      }
+    })
+  })
+
+  return test
+}

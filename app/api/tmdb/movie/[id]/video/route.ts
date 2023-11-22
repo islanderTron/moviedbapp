@@ -1,7 +1,7 @@
 import { MOVIEDB } from "@/app/server/tmdb";
 
-export async function GET({ url }) {
-  let movie_id = url.split("movie/")[1];
+export async function GET({ url }) {  
+  let movie_id = url.split("movie/")[1].split('/')[0];
   let video;
 
   await MOVIEDB.movieVideos({
@@ -14,6 +14,6 @@ export async function GET({ url }) {
 
   return Response.json({
     status: 200,
-    video,
+     video
   });
 }

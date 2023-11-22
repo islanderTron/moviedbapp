@@ -6,8 +6,10 @@ import { useState } from "react";
 export default function Carousel(props: any) {
   const { data, imageURL } = props;
   const [genres, setGenres] = useState();
+  const [similar, setSimilar] = useState();
+  const [provider, setProvider] = useState();
 
-  function getGenresData() {
+  async function getGenresData() {
     return fetch("/api/tmdb/genre")
       .then((res: any) => res.json())
       .then((res: any) => {
@@ -16,9 +18,25 @@ export default function Carousel(props: any) {
       .catch((error: any) => console.error(error));
   }
 
+  async function getSimilarData(id: any) {
+    return fetch(`/api/tmdb/movie/${id}/similar`)
+      .then((res: any) => res.json())
+      .then((res: any) => setSimilar(res.similar))
+      .catch((error: any) => console.error(error));
+  }
+
+  async function getProviderData(id: any) {
+    return fetch(`/api/tmdb/movie/${id}/provider`)
+      .then((res: any) => res.json())
+      .then((res: any) => setProvider(res.provider))
+      .catch((error: any) => console.error(error));
+  }
+
   // Event Handlers
-  function openModal(id: number) {
+  async function openModal(id: number) {
     getGenresData();
+    getSimilarData(id);
+    getProviderData(id);
     document.getElementById(id).showModal();
   }
 
@@ -36,7 +54,13 @@ export default function Carousel(props: any) {
               />
               <img src={`${imageURL}/${movie.poster_path}`} alt={movie.title} />
             </picture>
-            <Modal movie={movie} imageURL={imageURL} genres={genres} />
+            <Modal
+              movie={movie}
+              imageURL={imageURL}
+              genres={genres}
+              provider={provider}
+              similar={similar}
+            />
           </div>
         </Fragment>,
       );

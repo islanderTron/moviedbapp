@@ -1,11 +1,20 @@
 import { filterGenres } from "@/app/helper";
 import { useEffect } from "react";
 
-export default function Modal({ movie, imageURL, genres }) {
-  let genres_list: any;
+export default function Modal({ movie, imageURL, genres, provider, similar }) {
+
+  let genres_list: any, provider_list: any, similar_list: any;
 
   if (genres) {
     genres_list = filterGenres(movie.genre_ids, genres);
+  }
+
+  if (provider) {
+    provider_list = provider;
+  }
+
+  if (similar) {
+    similar_list = similar;
   }
 
   // Render Methods
@@ -13,6 +22,34 @@ export default function Modal({ movie, imageURL, genres }) {
     return genres_list.map((genre: string) => {
       return <p className="badge badge-lg">{genre}</p>;
     });
+  }
+
+  function renderProvider() {
+    return (
+      <picture>
+        <source srcSet={`${imageURL}/${provider.logo_path}`} type="image" />
+        <img
+          src={`${imageURL}/${provider.logo_path}`}
+          alt={provider.provider_name}
+        />
+      </picture>
+    );
+  }
+
+  function renderSimilar() {
+    let render: any = [];
+    similar_list.results.map((similar: any) => {
+      render.push(
+        <picture className="">
+          <source srcSet={`${imageURL}/${similar.poster_path}`} type="image" />
+          <img
+            src={`${imageURL}/${similar.poster_path}`}
+            alt={similar.original_title}
+          />
+        </picture>
+      );
+    });
+    return render;
   }
   return (
     <dialog
@@ -34,13 +71,15 @@ export default function Modal({ movie, imageURL, genres }) {
             />
             <img src={`${imageURL}/${movie.backdrop_path}`} alt={movie.title} />
           </picture>
+          {provider_list && renderProvider()}
         </div>
         <div className="p-2">
           <p> Genres: </p>
           {genres_list && renderGenres()}
         </div>
         <p className="p-2">{movie.overview}</p>
+        <div className="similar grid grid-cols-3 gap-4">{similar_list && renderSimilar()}</div>
       </div>
     </dialog>
-  );
+  );  
 }

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 // Componemts
 import Navbar from "./components/navbar/page";
+import Video from "./components/video/page";
 import Card from "./components/card/page";
 import Carousel from "./components/carousel/page";
 
@@ -105,6 +106,7 @@ export default function Home() {
     <main>
       <Navbar providers={providers} imageURL={imageURL} />
       <div>
+        {/* <Video /> */}
         <div>
           <div className="">
             <p className="text-2xl">Discovery</p>
