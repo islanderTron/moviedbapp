@@ -2,7 +2,6 @@ import { filterGenres } from "@/app/helper";
 import { useEffect } from "react";
 
 export default function Modal({ movie, imageURL, genres, provider, similar }) {
-
   let genres_list: any, provider_list: any, similar_list: any;
 
   if (genres) {
@@ -46,7 +45,7 @@ export default function Modal({ movie, imageURL, genres, provider, similar }) {
             src={`${imageURL}/${similar.poster_path}`}
             alt={similar.original_title}
           />
-        </picture>
+        </picture>,
       );
     });
     return render;
@@ -64,7 +63,7 @@ export default function Modal({ movie, imageURL, genres, provider, similar }) {
           </button>
         </form>
         <div>
-          <picture className="">
+          <picture>
             <source
               srcSet={`${imageURL}/${movie.backdrop_path}`}
               type="image"
@@ -78,8 +77,10 @@ export default function Modal({ movie, imageURL, genres, provider, similar }) {
           {genres_list && renderGenres()}
         </div>
         <p className="p-2">{movie.overview}</p>
-        <div className="similar grid grid-cols-3 gap-4">{similar_list && renderSimilar()}</div>
+        <div className="similar grid grid-cols-3 gap-4">
+          {similar_list && renderSimilar()}
+        </div>
       </div>
     </dialog>
-  );  
+  );
 }

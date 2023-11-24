@@ -9,6 +9,7 @@ export default function Carousel(props: any) {
   const [similar, setSimilar] = useState();
   const [provider, setProvider] = useState();
 
+  // HTTP Methods
   async function getGenresData() {
     return fetch("/api/tmdb/genre")
       .then((res: any) => res.json())
@@ -34,12 +35,15 @@ export default function Carousel(props: any) {
 
   // Event Handlers
   async function openModal(id: number) {
-    getGenresData();
-    getSimilarData(id);
-    getProviderData(id);
-    document.getElementById(id).showModal();
+    await Promise.all([
+      await getGenresData(),
+      await getSimilarData(id),
+      await getProviderData(id),
+    ]);
+    document?.getElementById(`${id}`)?.showModal();
   }
 
+  // Render Methods
   function renderCarousel() {
     let render: any = [];
 

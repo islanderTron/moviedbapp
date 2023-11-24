@@ -112,7 +112,7 @@ export default function Home() {
             <p className="text-2xl">Discovery</p>
           </div>
 
-          {discovery && <Carousel data={discovery} imageURL={imageURL} />}
+          {/* {discovery && <Carousel data={discovery} imageURL={imageURL} />} */}
         </div>
       </div>
     </main>
