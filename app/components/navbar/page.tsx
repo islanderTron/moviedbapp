@@ -13,7 +13,7 @@ export default function Navbar({ updateProvidersList, providers, imageURL }) {
   }
   async function onClick(e) {
     changeBackground(e);
-    updateProviders(e);
+    // updateProviders(e);
   }
 
   // HTTP Methods
@@ -33,35 +33,68 @@ export default function Navbar({ updateProvidersList, providers, imageURL }) {
     }
   }
 
+  // Need to update only DOM - right now, this render update both DOM & Provider State
   function providerList() {
-    if (providers) {
-      return (
-        <div className="flex">
-          {providers.map((provider: any) => {
-            return (
-              <button
-                className="hover:bg-sky-700 shrink w-11 p-1 m-2 mask mask-circle"
-                id={provider.provider_id}
-                key={provider.provider_id}
-                onClick={onClick}
-              >
-                <picture>
-                  <source
-                    srcSet={`${imageURL}/${provider.logo_path}`}
-                    type="image"
-                  />
-                  <img
-                    className="mask mask-circle"
-                    src={`${imageURL}/${provider.logo_path}`}
-                    alt={provider.provider_name}
-                  />
-                </picture>
-              </button>
-            );
-          })}
-        </div>
-      );
+    let static_providers = [
+      {
+        name: 'Amazon Prime Video',
+        img_path: 'logos/amazon_prime_video.jpg'
+      },
+      {
+        name: 'Apple TV Plus',
+        img_path: 'logos/apple_tv_plus.jpg'
+      },
+      {
+        name: 'Hulu',
+        img_path: 'logos/hulu.jpg'
+      },
+      {
+        name: 'HBO Max',
+        img_path: 'logos/max.jpg'
+      },
+      {
+        name: 'Netflix',
+        img_path: 'logos/netflix.jpg'
+      },
+      {
+        name: 'Paramount Plus',
+        img_path: 'logos/paramount.jpg'
+      },
+    ];
+
+    let add_ids = [];
+    for(const [key, value] of Object.entries(providers)) {
+      static_providers.map((provider: any) =>  {
+        (provider.name === value.provider_name)
+      })
     }
+
+    return (
+      <div className="flex">
+        {static_providers.map((provider: any) => {
+          return (
+            <button
+              className="hover:bg-sky-700 shrink w-11 p-1 m-2 mask mask-circle"
+              id={provider.provider_id}
+              key={provider.provider_id}
+              onClick={onClick}
+            >
+              <picture>
+                <source
+                  srcSet={`${provider.logo_path}`}
+                  type="image"
+                />
+                <img
+                  className="mask mask-circle"
+                  src={`${provider.img_path}`}
+                  alt={provider.provider_name}
+                />
+              </picture>
+            </button>
+          );
+        })}
+      </div>
+    );
   }
 
   return (

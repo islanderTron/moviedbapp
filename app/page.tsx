@@ -85,14 +85,6 @@ export default function Home() {
   // Render methods
   return (
     <main>
-      {/* {loadedCanShow && (
-        <Navbar
-          setProviderIDs={setProviderIDs}
-          updateProvidersList={updateProvidersList}
-          providers={providers}
-          imageURL={imageURL}
-        />
-      )} */}
       {loadedCanShow ? (
         <>
           <Navbar
@@ -100,7 +92,7 @@ export default function Home() {
             providers={providers}
             imageURL={imageURL}
           />
-          <div>
+          {/* <div>
             <div>
               <div className="">
                 <p className="text-2xl">Discovery</p>
@@ -108,7 +100,7 @@ export default function Home() {
 
               {discovery && <Carousel data={discovery} imageURL={imageURL} />}
             </div>
-          </div>
+          </div> */}
         </>
       ) : (
         <div className="h-screen flex items-center justify-center">
