@@ -23,11 +23,16 @@ export default function Home() {
   const [providers, setProviders] = useState(null);
   const [discovery, setDiscovery] = useState(null);
   const [imageURL, setImageURL] = useState("");
+  const [isLoad, setLoad] = useState(true);
+  const [providerIDs, setProviderIDs] = useState();
 
   // Lifecycle methods
   useEffect(() => {
-    getDiscovery();
-  }, [providers]);
+    let list = providerListComma(providerIDs);
+
+    getDiscovery(list);
+    setLoad(false);
+  }, [providerIDs]);
 
   useEffect(() => {
     getImagePath();
@@ -37,57 +42,30 @@ export default function Home() {
   // HTTP methods
   async function getProvidersData() {
     return fetch("/api/tmdb/providers")
-      .then(async (res) => res.json())
-      .then(async (res) => {
-        setProviders(res.providers_list);
+      .then((res) => res.json())
+      .then((res) => {
+        updateProvidersList(res.providers_list);
+        setProviderIDs(
+          res.providers_list.map((provider: any) => provider.provider_id),
+        );
       })
       .catch((error) => console.error(error));
   }
 
-  async function getDiscovery() {
-    let list = providerListComma(providers);
+  async function updateProvidersList(list) {
+    if (list) {
+      setProviders(list);
+      setProviderIDs(providers?.map((provider) => provider.provider_id));
+    }
+  }
 
-    return fetch(`/api/tmdb/discover?providers=${list}`)
+  async function getDiscovery(providerIDs: any) {
+    return fetch(`/api/tmdb/discover?providers=${providerIDs}`)
       .then((res) => res.json())
       .then((res) => {
         return setDiscovery(res.response.results);
       })
       .catch((err) => console.error(err));
-  }
-
-  function getPopularData() {
-    return fetch("/api/tmdb/popular")
-      .then((res) => res.json())
-      .then((res) => {
-        setPopular(res.result.results);
-        console.log(popular);
-      });
-  }
-
-  async function getTrendingData() {
-    return await fetch("/api/tmdb/trending", {
-      cache: "no-cache",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setTrending(res.result.results);
-      });
-  }
-
-  function getUpcomingData() {
-    return fetch("/api/tmdb/upcoming")
-      .then((res) => res.json())
-      .then((res) => {
-        return setUpcoming(res.result.results);
-      });
-  }
-
-  function getTopratedData() {
-    return fetch("/api/tmdb/top_rated")
-      .then((res) => res.json())
-      .then((res) => {
-        return setTopRated(res.result.results);
-      });
   }
 
   function getImagePath() {
@@ -101,20 +79,42 @@ export default function Home() {
     //     setImageURL(res.url_path);
     //   });
   }
+
+  // const loadedCanShow = false
+  const loadedCanShow = !isLoad && providerIDs;
   // Render methods
   return (
     <main>
-      <Navbar providers={providers} imageURL={imageURL} />
-      <div>
-        {/* <Video /> */}
-        <div>
-          <div className="">
-            <p className="text-2xl">Discovery</p>
-          </div>
+      {/* {loadedCanShow && (
+        <Navbar
+          setProviderIDs={setProviderIDs}
+          updateProvidersList={updateProvidersList}
+          providers={providers}
+          imageURL={imageURL}
+        />
+      )} */}
+      {loadedCanShow ? (
+        <>
+          <Navbar
+            updateProvidersList={updateProvidersList}
+            providers={providers}
+            imageURL={imageURL}
+          />
+          <div>
+            <div>
+              <div className="">
+                <p className="text-2xl">Discovery</p>
+              </div>
 
-          {/* {discovery && <Carousel data={discovery} imageURL={imageURL} />} */}
+              {discovery && <Carousel data={discovery} imageURL={imageURL} />}
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="h-screen flex items-center justify-center">
+          <span className="loading loading-spinner loading-lg"></span>
         </div>
-      </div>
+      )}
     </main>
   );
 }

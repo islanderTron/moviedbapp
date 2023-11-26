@@ -1,54 +1,38 @@
-import { useEffect, useState } from "react";
 
-export default function Navbar(props: any) {
-  const { providers, imageURL } = props;
-  const [providerIDS, setProviderIDs] = useState([]);
-  const [test, setTest] = useState(0);
+export default function Navbar({ updateProvidersList, providers, imageURL }) {
   // Lifecycle
-  useEffect(() => {
-    if (providers)
-      setProviderIDs(providers.map((provider: any) => provider.provider_id));
-    console.log(providerIDS);
-  }, [providers]);
 
   // Event Methods
-  function onClick(e) {
-    // 1) Change the color after click a button
-    let domState = e.target.parentNode.parentNode.style.background;
+  function updateProviders(e) {
     let selected_id: number = parseInt(e.target.parentNode.parentNode.id);
-    // let selected_index = providerIDS.indexOf(selected_id);
-    // console.log(providerIDS.splice(selected_index, 1));
-    
 
-    // image -> pic -> button
-    if (domState === "") {
-      e.target.parentNode.parentNode.style.background = "gray";
-      e.target.parentNode.parentNode.style.opacity = 0.49;
-      // setProviderIDs(providerIDS.filter(id => id !== selected_id));
-      setTest(selected_id)
-      
-    } else {
-      e.target.parentNode.parentNode.style.background = "";
-      e.target.parentNode.parentNode.style.opacity = 1;
-      setTest(0)
-    }
-    console.log(test);
-    
-
-    // 	https://tailwindcss.com/docs/background-color
-
-    // 2) Update the providers - add or remove ID
-
-    // 3) Then call endpoint - discover with updated state
+    let filter = providers.filter(
+      (provider: any) => provider.provider_id !== selected_id,
+    );
+    updateProvidersList(filter);
   }
-
-  function updateProviderIDs(id) {
-    providerIDS.slice()
+  async function onClick(e) {
+    changeBackground(e);
+    updateProviders(e);
   }
 
   // HTTP Methods
 
   // Render Methods
+  function changeBackground(e) {
+    // image -> pic -> button
+    // Maniplative the DOM and state
+    let domState = e.target.parentNode.parentNode.style.background;
+
+    if (domState === "") {
+      e.target.parentNode.parentNode.style.background = "gray";
+      e.target.parentNode.parentNode.style.opacity = 0.49;
+    } else {
+      e.target.parentNode.parentNode.style.background = "";
+      e.target.parentNode.parentNode.style.opacity = 1;
+    }
+  }
+
   function providerList() {
     if (providers) {
       return (
@@ -86,9 +70,9 @@ export default function Navbar(props: any) {
         <a className="btn btn-ghost text-xl">Streaming App Movies </a>
         {providerList()}
       </div>
-      {/* <div className="flex-none">
+      <div className="flex-none">
         <button className="btn btn-square btn-ghost"></button>
-      </div> */}
+      </div>
     </div>
   );
 }
