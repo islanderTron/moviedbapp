@@ -1,3 +1,4 @@
+import { useState } from "react";
 
 export default function Navbar({ updateProvidersList, providers, imageURL }) {
   // Lifecycle
@@ -6,14 +7,23 @@ export default function Navbar({ updateProvidersList, providers, imageURL }) {
   function updateProviders(e) {
     let selected_id: number = parseInt(e.target.parentNode.parentNode.id);
 
-    let filter = providers.filter(
-      (provider: any) => provider.provider_id !== selected_id,
-    );
-    updateProvidersList(filter);
+    let found = providers.find(provider => provider.provider_id === selected_id);
+    // First, work on mutate the array - remove and add more than one object. So you will get sense how to do this properly. 
+    // switch(found) {
+    //   // Remove if the provider is found in array
+    //   case found:
+    //     updateProviders(providers.filter(provider => provider.provider_id !== selected_id)) 
+    //   // Add if the provider_id is not found in array
+    //   default:
+    // }
+
+    console.log(providers);
+    
+    // updateProvidersList(filter);
   }
   async function onClick(e) {
     changeBackground(e);
-    // updateProviders(e);
+    updateProviders(e);
   }
 
   // HTTP Methods
@@ -37,46 +47,45 @@ export default function Navbar({ updateProvidersList, providers, imageURL }) {
   function providerList() {
     let static_providers = [
       {
+        name: 'Netflix',
+        img_path: 'logos/netflix.jpg',
+        provider_id: 8
+      },
+      {
         name: 'Amazon Prime Video',
-        img_path: 'logos/amazon_prime_video.jpg'
+        img_path: 'logos/amazon_prime_video.jpg',
+        provider_id: 9
       },
       {
         name: 'Apple TV Plus',
-        img_path: 'logos/apple_tv_plus.jpg'
+        img_path: 'logos/apple_tv_plus.jpg',
+        provider_id: 350
       },
       {
         name: 'Hulu',
-        img_path: 'logos/hulu.jpg'
+        img_path: 'logos/hulu.jpg',
+        provider_id: 15
       },
       {
         name: 'HBO Max',
-        img_path: 'logos/max.jpg'
-      },
-      {
-        name: 'Netflix',
-        img_path: 'logos/netflix.jpg'
+        img_path: 'logos/max.jpg',
+        provider_id: 384
       },
       {
         name: 'Paramount Plus',
-        img_path: 'logos/paramount.jpg'
+        img_path: 'logos/paramount.jpg',
+        provider_id: 531
       },
     ];
 
-    let add_ids = [];
-    for(const [key, value] of Object.entries(providers)) {
-      static_providers.map((provider: any) =>  {
-        (provider.name === value.provider_name)
-      })
-    }
-
     return (
       <div className="flex">
-        {static_providers.map((provider: any) => {
+        {static_providers.map((provider: any, index: number) => {
           return (
             <button
               className="hover:bg-sky-700 shrink w-11 p-1 m-2 mask mask-circle"
               id={provider.provider_id}
-              key={provider.provider_id}
+              key={index}
               onClick={onClick}
             >
               <picture>
