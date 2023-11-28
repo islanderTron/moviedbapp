@@ -14,10 +14,6 @@ import Carousel from "./components/carousel/page";
 // Helper
 import { providerListComma } from "./helper";
 
-// DEV Mode
-import test from "./server/tmdb/example/popular.json";
-import dev_image_path from "./server/tmdb/example/file_config.json";
-
 export default function Home() {
   const [popular, setPopular] = useState(null);
   const [providers, setProviders] = useState(null);
@@ -44,22 +40,36 @@ export default function Home() {
     return fetch("/api/tmdb/providers")
       .then((res) => res.json())
       .then((res) => {
-        updateProvidersList(res.providers_list);
-        setProviderIDs(
-          res.providers_list.map((provider: any) => provider.provider_id),
+        // Add a key: isShow for each obj.
+        let addEnable = res.providers_list.map(
+          (prov: { [x: string]: any }, i: string | number) => {
+            return (prov[i] = {
+              ...prov,
+              isEnable: true,
+            });
+          },
         );
+        updateProvidersList(addEnable);
+        setProviderIDs(addEnable.map((provider: any) => provider.provider_id));
       })
       .catch((error) => console.error(error));
   }
 
-  async function updateProvidersList(list) {
+  async function updateProvidersList(list: any) {
     if (list) {
-      setProviders(list);
-      setProviderIDs(providers?.map((provider) => provider.provider_id));
+      let addEnable = list;
+      setProviders(addEnable);
+
+      let list_enable = addEnable.filter(
+        (prov: { isEnable: boolean }) => prov.isEnable === true,
+      );
+      setProviderIDs(
+        list_enable?.map((prov: { provider_id: any }) => prov.provider_id),
+      );
     }
   }
 
-  async function getDiscovery(providerIDs: any) {
+  async function getDiscovery(providerIDs: string) {
     return fetch(`/api/tmdb/discover?providers=${providerIDs}`)
       .then((res) => res.json())
       .then((res) => {
@@ -69,19 +79,15 @@ export default function Home() {
   }
 
   function getImagePath() {
-    // DEV mode
-    setImageURL(dev_image_path.url_path);
-
-    // Prod mode
-    // return fetch("/api/tmdb/image_config")
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     setImageURL(res.url_path);
-    //   });
+    return fetch("/api/tmdb/image_config")
+      .then((res) => res.json())
+      .then((res) => {
+        setImageURL(res.url_path);
+      });
   }
 
-  // const loadedCanShow = false
   const loadedCanShow = !isLoad && providerIDs;
+
   // Render methods
   return (
     <main>
@@ -92,7 +98,7 @@ export default function Home() {
             providers={providers}
             imageURL={imageURL}
           />
-          {/* <div>
+          <div>
             <div>
               <div className="">
                 <p className="text-2xl">Discovery</p>
@@ -100,7 +106,7 @@ export default function Home() {
 
               {discovery && <Carousel data={discovery} imageURL={imageURL} />}
             </div>
-          </div> */}
+          </div>
         </>
       ) : (
         <div className="h-screen flex items-center justify-center">

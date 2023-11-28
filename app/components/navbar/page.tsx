@@ -1,36 +1,44 @@
-import { useState } from "react";
-
 export default function Navbar({ updateProvidersList, providers, imageURL }) {
   // Lifecycle
 
   // Event Methods
-  function updateProviders(e) {
+  function updateProviders(e: {
+    target: { parentNode: { parentNode: { id: string } } };
+  }) {
     let selected_id: number = parseInt(e.target.parentNode.parentNode.id);
+    let filter_pro = providers;
 
-    let found = providers.find(provider => provider.provider_id === selected_id);
-    // First, work on mutate the array - remove and add more than one object. So you will get sense how to do this properly. 
-    // switch(found) {
-    //   // Remove if the provider is found in array
-    //   case found:
-    //     updateProviders(providers.filter(provider => provider.provider_id !== selected_id)) 
-    //   // Add if the provider_id is not found in array
-    //   default:
-    // }
+    // 1. Change the boolean depends on the condition
+    let selected_obj = filter_pro.filter(
+      (prov: any) => prov.provider_id === selected_id,
+    )[0];
+    selected_obj.isEnable
+      ? (selected_obj.isEnable = false)
+      : (selected_obj.isEnable = true);
 
-    console.log(providers);
-    
-    // updateProvidersList(filter);
+    // 2. Replace the selected object
+    filter_pro = filter_pro.filter(
+      (provider: { provider_id: any }) =>
+        provider.provider_id !== selected_obj.provider_id,
+    );
+
+    filter_pro.push(selected_obj); // add the new object
+
+    updateProvidersList(filter_pro);
   }
-  async function onClick(e) {
+  async function onClick(e: any) {
     changeBackground(e);
     updateProviders(e);
   }
 
-  // HTTP Methods
-
   // Render Methods
-  function changeBackground(e) {
-    // image -> pic -> button
+  function changeBackground(e: {
+    target: {
+      parentNode: {
+        parentNode: { style: { background: string; opacity: number } };
+      };
+    };
+  }) {
     // Maniplative the DOM and state
     let domState = e.target.parentNode.parentNode.style.background;
 
@@ -47,34 +55,34 @@ export default function Navbar({ updateProvidersList, providers, imageURL }) {
   function providerList() {
     let static_providers = [
       {
-        name: 'Netflix',
-        img_path: 'logos/netflix.jpg',
-        provider_id: 8
+        name: "Netflix",
+        img_path: "logos/netflix.jpg",
+        provider_id: 8,
       },
       {
-        name: 'Amazon Prime Video',
-        img_path: 'logos/amazon_prime_video.jpg',
-        provider_id: 9
+        name: "Amazon Prime Video",
+        img_path: "logos/amazon_prime_video.jpg",
+        provider_id: 9,
       },
       {
-        name: 'Apple TV Plus',
-        img_path: 'logos/apple_tv_plus.jpg',
-        provider_id: 350
+        name: "Apple TV Plus",
+        img_path: "logos/apple_tv_plus.jpg",
+        provider_id: 350,
       },
       {
-        name: 'Hulu',
-        img_path: 'logos/hulu.jpg',
-        provider_id: 15
+        name: "Hulu",
+        img_path: "logos/hulu.jpg",
+        provider_id: 15,
       },
       {
-        name: 'HBO Max',
-        img_path: 'logos/max.jpg',
-        provider_id: 384
+        name: "HBO Max",
+        img_path: "logos/max.jpg",
+        provider_id: 384,
       },
       {
-        name: 'Paramount Plus',
-        img_path: 'logos/paramount.jpg',
-        provider_id: 531
+        name: "Paramount Plus",
+        img_path: "logos/paramount.jpg",
+        provider_id: 531,
       },
     ];
 
@@ -89,10 +97,7 @@ export default function Navbar({ updateProvidersList, providers, imageURL }) {
               onClick={onClick}
             >
               <picture>
-                <source
-                  srcSet={`${provider.logo_path}`}
-                  type="image"
-                />
+                <source srcSet={`${provider.logo_path}`} type="image" />
                 <img
                   className="mask mask-circle"
                   src={`${provider.img_path}`}
