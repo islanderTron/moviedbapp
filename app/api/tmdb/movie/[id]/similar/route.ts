@@ -1,7 +1,7 @@
 import { MOVIEDB } from "@/app/server/tmdb";
 
-export async function GET({ url }) {  
-  let movie_id = url.split("movie/")[1].split('/')[0];
+export async function GET(req, res) {  
+  let movie_id = res.params.id
   let similar;
 
   await MOVIEDB.movieSimilar({
@@ -13,7 +13,6 @@ export async function GET({ url }) {
     .catch(console.error);
 
   return Response.json({
-    status: 200,
      similar
   });
 }

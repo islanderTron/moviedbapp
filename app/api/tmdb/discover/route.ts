@@ -88,7 +88,6 @@ export async function GET({ url }): Promise<Response> {
 	});
 
 	return Response.json({
-		status: 200,
 		response,
 	});
 }

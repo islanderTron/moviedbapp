@@ -1,24 +1,23 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import { MOVIEDB } from "@/app/server/tmdb";
-import { matchProvider } from "@/app/helper";
 
-export async function GET({ url }) {  
-  let movie_id = url.split("movie/")[1].split('/')[0];
-  let provider;
-  
-  let localization = 'US'
+export async function GET(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const movie_id = res.params.id;
+  let localization = "US";
 
-  await MOVIEDB.movieWatchProviders({
-    id: movie_id,
-  })
-    .then(async (res: any) => {
-      let filterProvider = await matchProvider(res.results[localization])
+  try {
+    let response = await MOVIEDB.movieWatchProviders({
+      id: movie_id,
+    });
 
-      provider = filterProvider
-    })
-    .catch(console.error);
-
-  return Response.json({
-    status: 200,
-     provider
-  });
+    let flatrate = response.results[localization].flatrate;
+    return Response.json({
+      flatrate,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }

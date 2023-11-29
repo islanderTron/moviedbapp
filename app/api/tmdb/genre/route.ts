@@ -9,7 +9,6 @@ export async function GET() {
     .catch((error) => console.error(error))
   
   return Response.json({
-    status: 200,
     genres
   });
 }

@@ -20,7 +20,6 @@ export async function GET() {
     .catch(console.error);
 
   return Response.json({
-    status: 200,
     result,
   });
 }

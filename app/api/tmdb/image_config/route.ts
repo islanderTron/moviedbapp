@@ -6,7 +6,6 @@ export async function GET() {
 	let url_path = image_config.images.base_url + '/original'
 	
   return Response.json({
-    status: 200,
     url_path,
   });
 }

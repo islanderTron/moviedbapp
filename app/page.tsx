@@ -10,6 +10,7 @@ import Navbar from "./components/navbar/page";
 import Video from "./components/video/page";
 import Card from "./components/card/page";
 import Carousel from "./components/carousel/page";
+import Spin from "./components/sping/page";
 
 // Helper
 import { providerListComma } from "./helper";
@@ -17,10 +18,12 @@ import { providerListComma } from "./helper";
 export default function Home() {
   const [popular, setPopular] = useState(null);
   const [providers, setProviders] = useState(null);
+  const [fixedProviders, setFixedProviders] = useState(null);
   const [discovery, setDiscovery] = useState(null);
   const [imageURL, setImageURL] = useState("");
   const [isLoad, setLoad] = useState(true);
   const [providerIDs, setProviderIDs] = useState();
+  const [genres, setGenres] = useState(null);
 
   // Lifecycle methods
   useEffect(() => {
@@ -33,6 +36,7 @@ export default function Home() {
   useEffect(() => {
     getImagePath();
     getProvidersData();
+    getGenresData();
   }, []);
 
   // HTTP methods
@@ -40,6 +44,8 @@ export default function Home() {
     return fetch("/api/tmdb/providers")
       .then((res) => res.json())
       .then((res) => {
+        // There 2 states for Providers: one is for fixed and another is to use filteer to display the list of movies
+        setFixedProviders(res.providers_list);
         // Add a key: isShow for each obj.
         let addEnable = res.providers_list.map(
           (prov: { [x: string]: any }, i: string | number) => {
@@ -86,6 +92,14 @@ export default function Home() {
       });
   }
 
+  async function getGenresData() {
+    return fetch("/api/tmdb/genre")
+      .then((res: any) => res.json())
+      .then((res: any) => {
+        setGenres(res.genres);
+      });
+  }
+
   const loadedCanShow = !isLoad && providerIDs;
 
   // Render methods
@@ -104,14 +118,19 @@ export default function Home() {
                 <p className="text-2xl">Discovery</p>
               </div>
 
-              {discovery && <Carousel data={discovery} imageURL={imageURL} />}
+              {discovery && (
+                <Carousel
+                  data={discovery}
+                  imageURL={imageURL}
+                  genres={genres}
+                  fixedProviders={fixedProviders}
+                />
+              )}
             </div>
           </div>
         </>
       ) : (
-        <div className="h-screen flex items-center justify-center">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
+        <Spin />
       )}
     </main>
   );

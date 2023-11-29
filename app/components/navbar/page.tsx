@@ -117,9 +117,6 @@ export default function Navbar({ updateProvidersList, providers, imageURL }) {
         <a className="btn btn-ghost text-xl">Streaming App Movies </a>
         {providerList()}
       </div>
-      <div className="flex-none">
-        <button className="btn btn-square btn-ghost"></button>
-      </div>
     </div>
   );
 }
