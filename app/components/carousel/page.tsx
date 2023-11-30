@@ -1,8 +1,9 @@
 "use client";
 import Modal from "$app/components/modal/page";
-import { Fragment, Key } from "react";
+import { Fragment } from "react";
 import { useState } from "react";
 import { filterGenres } from "@/app/helper";
+import Spin from "../sping/page";
 
 export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   const [similar, setSimilar] = useState();
@@ -31,12 +32,6 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
     return fetch(`/api/tmdb/movie/${id}/provider`)
       .then((res: any) => res.json())
       .then((res: any) => {
-
-        // let filtered = res.flatrate.filter(i => {
-        //   return fixedProviders.includes(i.provider_id)  
-        // })
-        
-        // console.log(filtered);
 
         res.flatrate.filter(i => {
           fixedProviders.map(prov => {
@@ -70,7 +65,7 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   function renderCarousel() {
     let render: any = [];
 
-    data.map((movie: { id: any; poster_path: any; title: string | undefined; }): void => {
+    data.map((movie: { id: any; poster_path: any; title: string | undefined; }, index: number): void => {
       render.push(
         <Fragment key={movie.id}>
           <div className="carousel-item  w-1/2 sm:w-2/4 lg:w-1/4">

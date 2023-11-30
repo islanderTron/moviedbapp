@@ -1,7 +1,11 @@
-export default function Spin() {
+export default function Spin(props) {
   return (
-    <div className="h-screen flex items-center justify-center">
+    <div
+      className={`flex items-center justify-center ${
+        props["h-screen" ?? "h-screen"]
+      }`}
+    >
       <span className="loading loading-spinner loading-lg"></span>
     </div>
-  )
+  );
 }

@@ -11,7 +11,7 @@ export default function Modal({
   // Render Methods
   function renderGenres() {
     return movieGenres.map((genre: string) => {
-      return <p className="badge badge-lg">{genre}</p>;
+      return <div className="badge badge-neutral badge-lg">{genre}</div>;
     });
   }
 
@@ -21,6 +21,7 @@ export default function Modal({
         <picture>
           <source srcSet={`${imageURL}/${provider.logo_path}`} type="image" />
           <img
+            className="w-20 mask mask-circle"
             src={`${imageURL}/${provider.logo_path}`}
             alt={provider.provider_name}
           />
@@ -60,24 +61,28 @@ export default function Modal({
     >
       <div className="modal-box p-0 w-full max-w-5xl">
         <form method="dialog">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-40">
             ✕
           </button>
         </form>
         <div>
           {loadedCanShow ? (
             <>
-              <picture>
-                <source
-                  srcSet={`${imageURL}/${movie.backdrop_path}`}
-                  type="image"
-                />
-                <img
-                  src={`${imageURL}/${movie.backdrop_path}`}
-                  alt={movie.title}
-                />
-                {renderProvider()}
-              </picture>
+              <div style={{position: "relative"}}>
+                <picture>
+                  <source
+                    srcSet={`${imageURL}/${movie.backdrop_path}`}
+                    type="image"
+                  />
+                  <img
+                    src={`${imageURL}/${movie.backdrop_path}`}
+                    alt={movie.title}
+                  />
+                </picture>
+                <div style={{position: 'absolute', bottom: 0, right: 0}}>
+                  {renderProvider()}
+                </div>
+              </div>
               <div className="p-2">
                 <p> Genres: </p>
                 {renderGenres()}

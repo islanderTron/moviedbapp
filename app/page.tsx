@@ -7,39 +7,54 @@ import { useEffect, useState } from "react";
 
 // Componemts
 import Navbar from "./components/navbar/page";
-import Video from "./components/video/page";
-import Card from "./components/card/page";
-import Carousel from "./components/carousel/page";
 import Spin from "./components/sping/page";
+
+import Discover from "./components/main/discover/page";
 
 // Helper
 import { providerListComma } from "./helper";
+import Trending from "./components/main/trending/page";
 
 export default function Home() {
-  const [popular, setPopular] = useState(null);
   const [providers, setProviders] = useState(null);
   const [fixedProviders, setFixedProviders] = useState(null);
+  const [providerIDs, setProviderIDs] = useState();
+
   const [discovery, setDiscovery] = useState(null);
   const [imageURL, setImageURL] = useState("");
   const [isLoad, setLoad] = useState(true);
-  const [providerIDs, setProviderIDs] = useState();
   const [genres, setGenres] = useState(null);
+  const [trends, setTrends] = useState(null);
 
   // Lifecycle methods
   useEffect(() => {
-    let list = providerListComma(providerIDs);
+    async function callAll() {
+      return await Promise.all([
+        await getImagePath(),
+        await getProvidersData(),
+        await getGenresData(),
+      ]);
+    }
 
-    getDiscovery(list);
-    setLoad(false);
-  }, [providerIDs]);
-
-  useEffect(() => {
-    getImagePath();
-    getProvidersData();
-    getGenresData();
+    callAll();
   }, []);
 
+  useEffect(() => {
+    let list = providerListComma(providerIDs);
+
+    if (providers) {
+      getDiscovery(list);
+      setLoad(false);
+      // getTrendingData();
+    }
+  }, [providerIDs]);
+
   // HTTP methods
+  async function getTrendingData() {
+    return fetch(`/api/tmdb/trending`)
+    .then((res: any) => res.json())
+    .then((res: any) => setTrends(res.result.results))
+  }
   async function getProvidersData() {
     return fetch("/api/tmdb/providers")
       .then((res) => res.json())
@@ -112,25 +127,24 @@ export default function Home() {
             providers={providers}
             imageURL={imageURL}
           />
-          <div>
-            <div>
-              <div className="">
-                <p className="text-2xl">Discovery</p>
-              </div>
-
-              {discovery && (
-                <Carousel
-                  data={discovery}
-                  imageURL={imageURL}
-                  genres={genres}
-                  fixedProviders={fixedProviders}
-                />
-              )}
-            </div>
-          </div>
+          {
+            <Discover
+              discovery={discovery}
+              imageURL={imageURL}
+              genres={genres}
+              fixedProviders={fixedProviders}
+            />
+          }{
+            // <Trending 
+            // trends={trends} 
+            // imageURL={imageURL}
+            // genres={genres}
+            // fixedProviders={fixedProviders}
+            // />
+          }
         </>
       ) : (
-        <Spin />
+        <Spin h-screen={"h-screen"} />
       )}
     </main>
   );
