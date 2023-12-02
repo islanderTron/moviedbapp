@@ -5,7 +5,7 @@ export default function Discover({discovery, imageURL, genres, fixedProviders}) 
     <div>
       <div>
         <div>
-          <p className="text-2xl">Discovery</p>
+          <p className="text-2xl">Most Popular</p>
         </div>
 
         {discovery ? (
