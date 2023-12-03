@@ -10,9 +10,11 @@ export default function Modal({
 }) {
   // Render Methods
   function renderGenres() {
-    return movieGenres.map((genre: string) => {
-      return <div className="badge badge-neutral badge-lg">{genre}</div>;
-    });
+    if(movieGenres) {
+      return movieGenres.map((genre: { name: boolean }) => {
+        return <div className="badge badge-neutral badge-lg">{genre.name}</div>;
+      });
+    }
   }
 
   function renderProvider() {
@@ -32,7 +34,8 @@ export default function Modal({
 
   function renderSimilar() {
     let render: any = [];
-    if (loadedCanShow) {
+    
+    if (loadedCanShow &&  similar.results) {
       similar.results.map((similar: any) => {
         render.push(
           <picture className="">

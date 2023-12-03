@@ -49,7 +49,7 @@ export async function GET({ url }): Promise<Response> {
 		"release_date.gte": Date,
 		"release_date.lte": Date,
 		sort_by: string,
-		"popularity.desc": "popularity.asc" | "popularity.desc" | "revenue.asc" | "revenue.desc" | "primary_release_date.asc" | "primary_release_date.desc" | "vote_average.asc" | "vote_average.desc" | "vote_count.asc" | "vote_count.desc",
+		"popularity.desc": "popularity.asc" | "popularity.desc" | "revenue.asc" | "revenue.desc" | "primary_release_date.asc" | "primary_release_date.desc" | "vote_average.asc" | "vote_average.desc" | "vote_ctount.asc" | "vote_count.desc",
 		"vote_average.gte": number,
 		"vote_average.lte": number,
 		"vote_count.gte": number,

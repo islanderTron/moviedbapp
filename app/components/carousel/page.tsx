@@ -2,8 +2,6 @@
 import Modal from "$app/components/modal/page";
 import { Fragment } from "react";
 import { useState } from "react";
-import { filterGenres } from "@/app/helper";
-import Spin from "../sping/page";
 
 export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   const [similar, setSimilar] = useState();
@@ -12,15 +10,6 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   const [movieGenres, setMovieGenres] = useState();
 
   // HTTP Methods
-  async function getGenresData(movie_id: number) {
-    if(genres) {
-      let movie_genres_ids = data.filter((movie: { id: number; }) => movie.id === movie_id)[0].genre_ids
-      let filter_genres = filterGenres(movie_genres_ids, genres)
-      
-      setMovieGenres(filter_genres)
-    }
-  }
-
   async function getSimilarData(id: any) {
     return fetch(`/api/tmdb/movie/${id}/similar`)
       .then((res: any) => res.json())
@@ -28,32 +17,34 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
       .catch((error: any) => console.error(error));
   }
 
-  async function getProviderData(id: any) {
-    return fetch(`/api/tmdb/movie/${id}/provider`)
+  async function getMovieInfo(id: number) {
+    return fetch(`/api/tmdb/movie/${id}`)
       .then((res: any) => res.json())
       .then((res: any) => {
+        let info = res.movie_info;
+        // Set Genres
+        if(genres) {
+          setMovieGenres(info.genres)
+        }
 
-        res.flatrate.filter(i => {
+        // Set watch provider for now
+        info['watch/providers'].results.US.flatrate.filter(i => {
           fixedProviders.map(prov => {
             if(prov.provider_id === i.provider_id) {
               setProvider(prov);
             }
           })
         })
-        
       })
-      .catch((error: any) => console.error(error));
   }
 
   // Event Handlers
   async function openModal(id: number) {
     if(id) {
       await Promise.all([
-        await getGenresData(id),
-        await getSimilarData(id),
-        await getProviderData(id),
-      ]);
-      
+        getMovieInfo(id),
+        getSimilarData(id)
+      ])
       setLoad(false);
       document?.getElementById(`${id}`)?.showModal();
     }
