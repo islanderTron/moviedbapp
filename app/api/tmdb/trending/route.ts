@@ -1,14 +1,23 @@
 import { MOVIEDB } from "@/app/server/tmdb";
 
 export async function GET() {
-  let localization = 'US';
-  let primary_release_year = 2023;
-  let sort_by = 'popularity.desc'
+  try {
+    let request = await MOVIEDB.trending({
+      media_type: 'movie',
+      time_window: [`week`]
+    })
 
-  let time_window: ['day', 'week'];
-  let provider_id = [];
-  
-  return Response.json({
-    status: 200,
-  });
+    if(request) {
+      let trending_info = await request;
+      console.log(trending_info);
+      
+      return Response.json({
+        trending_info
+      }); 
+    }
+    
+
+  } catch (error) {
+    console.error(error)
+  }
 }

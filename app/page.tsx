@@ -45,7 +45,7 @@ export default function Home() {
     if (providers) {
       getDiscovery(list);
       setLoad(false);
-      // getTrendingData();
+      getTrendingData();
     }
   }, [providerIDs]);
 
@@ -53,7 +53,7 @@ export default function Home() {
   async function getTrendingData() {
     return fetch(`/api/tmdb/trending`)
     .then((res: any) => res.json())
-    .then((res: any) => setTrends(res.result.results))
+    .then((res: any) => setTrends(res.trending_info.results))
   }
   async function getProvidersData() {
     return fetch("/api/tmdb/providers")
@@ -128,19 +128,19 @@ export default function Home() {
             imageURL={imageURL}
           />
           {
-            <Discover
-              discovery={discovery}
+            // <Discover
+            //   discovery={discovery}
+            //   imageURL={imageURL}
+            //   genres={genres}
+            //   fixedProviders={fixedProviders}
+            // />
+          }{
+            <Trending 
+              trends={trends} 
               imageURL={imageURL}
               genres={genres}
               fixedProviders={fixedProviders}
             />
-          }{
-            // <Trending 
-            // trends={trends} 
-            // imageURL={imageURL}
-            // genres={genres}
-            // fixedProviders={fixedProviders}
-            // />
           }
         </>
       ) : (

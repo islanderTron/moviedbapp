@@ -27,14 +27,17 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
           setMovieGenres(info.genres)
         }
 
-        // Set watch provider for now
-        info['watch/providers'].results.US.flatrate.filter(i => {
-          fixedProviders.map(prov => {
-            if(prov.provider_id === i.provider_id) {
-              setProvider(prov);
-            }
-          })
-        })
+        // Set watch provider for now - some of those are not in flatrate...So just show where and how we can watch them. 
+        console.log(info['watch/providers'].results.US);
+        if(info['watch/providers'].results.US.flatrate) {
+          // info['watch/providers'].results.US.flatrate.filter(i => {
+          //   fixedProviders.map(prov => {
+          //     if(prov.provider_id === i.provider_id) {
+          //       setProvider(prov);
+          //     }
+          //   })
+          // })
+        }
       })
   }
 
