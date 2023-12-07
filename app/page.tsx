@@ -24,7 +24,7 @@ export default function Home() {
   const [imageURL, setImageURL] = useState("");
   const [isLoad, setLoad] = useState(true);
   const [genres, setGenres] = useState(null);
-  const [trends, setTrends] = useState(null);
+  // const [trends, setTrends] = useState(null);
 
   // Lifecycle methods
   useEffect(() => {
@@ -33,28 +33,25 @@ export default function Home() {
         await getImagePath(),
         await getProvidersData(),
         await getGenresData(),
+        setLoad(false)
+        // await getTrendingData()
       ]);
     }
 
     callAll();
   }, []);
 
-  useEffect(() => {
-    let list = providerListComma(providerIDs);
+  // useEffect(() => {
+  //   let list = providerListComma(providerIDs);
 
-    if (providers) {
-      getDiscovery(list);
-      setLoad(false);
-      getTrendingData();
-    }
-  }, [providerIDs]);
+  //   if (providers) {
+  //     // getDiscovery(list);
+  //     // getTrendingData();
+  //     setLoad(false);
+  //   }
+  // }, [providerIDs]);
 
   // HTTP methods
-  async function getTrendingData() {
-    return fetch(`/api/tmdb/trending`)
-    .then((res: any) => res.json())
-    .then((res: any) => setTrends(res.trending_info.results))
-  }
   async function getProvidersData() {
     return fetch("/api/tmdb/providers")
       .then((res) => res.json())
@@ -136,7 +133,6 @@ export default function Home() {
             // />
           }{
             <Trending 
-              trends={trends} 
               imageURL={imageURL}
               genres={genres}
               fixedProviders={fixedProviders}

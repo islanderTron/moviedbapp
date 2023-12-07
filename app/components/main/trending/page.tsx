@@ -1,12 +1,50 @@
-import Carousel from "../../carousel/page";
-import Spin from "../../sping/page";
+import Carousel from "$app/components/carousel/page";
+import Spin from "$app/components/sping/page";
+import { useEffect, useState } from "react";
 
-export default function Trending({ trends, imageURL, genres, fixedProviders }) {
+export default function Trending({ imageURL, genres, fixedProviders }) {
+  const [trends, setTrends] = useState();
+  const [timeWindow, setTimeWindow] = useState("day");
+
+  useEffect(() => {
+    getTrendingData();
+  }, []);
+
+  useEffect(() => {
+    getTrendingData();
+  }, [timeWindow]);
+
+  // HTTP methods
+  async function getTrendingData() {
+    return fetch(`/api/tmdb/trending?time_window=${timeWindow}`)
+      .then((res: any) => res.json())
+      .then((res: any) => setTrends(res.trending_info.results));
+  }
+
+  // Event Handler
+  function updateTimeWindow(time: string): void {
+    setTimeWindow(time);
+  }
+
+  // Render
+  function renderSwitch() {
+    return (
+      <ul className="menu menu-horizontal bg-base-200 rounded-box ml-2">
+        <li id="day" onClick={() => updateTimeWindow("day")}>
+          <a className={timeWindow === "day" ? "active" : ""}>Day</a>
+        </li>
+        <li id="week" onClick={() => updateTimeWindow("week")}>
+          <a className={timeWindow === "week" ? "active" : ""}>Week</a>
+        </li>
+      </ul>
+    );
+  }
   return (
     <div>
       <div>
         <div>
-          <p className="text-2xl">Trending</p>
+          <span className="text-2xl">Trending</span>
+          {renderSwitch()}
         </div>
 
         {trends ? (
