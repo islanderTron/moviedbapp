@@ -23,31 +23,42 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
       .then((res: any) => {
         let info = res.movie_info;
         // Set Genres
-        if(genres) {
-          setMovieGenres(info.genres)
+        if (genres) {
+          setMovieGenres(info.genres);
         }
 
-        // Set watch provider for now - some of those are not in flatrate...So just show where and how we can watch them. 
-        console.log(info['watch/providers'].results.US);
-        if(info['watch/providers'].results.US.flatrate) {
-          // info['watch/providers'].results.US.flatrate.filter(i => {
-          //   fixedProviders.map(prov => {
-          //     if(prov.provider_id === i.provider_id) {
-          //       setProvider(prov);
-          //     }
-          //   })
-          // })
+        let hasValue =
+          info &&
+          info["watch/providers"] &&
+          info["watch/providers"].results &&
+          info["watch/providers"].results.US &&
+          info["watch/providers"].results.US.flatrate;
+
+        console.log(hasValue);
+
+        // Set watch provider for now - some of those are not in flatrate...So just show where and how we can watch them.
+        // Check the objec
+        if (hasValue) {
+          console.log(info["watch/providers"].results.US);
+          // Checek if there's flaterate
+          info["watch/providers"].results.US.flatrate.filter((i) => {
+            fixedProviders.map((prov) => {
+              if (prov.provider_id === i.provider_id) {
+                setProvider(prov);
+              }
+            });
+          });
         }
-      })
+      });
   }
 
   // Event Handlers
   async function openModal(id: number) {
-    if(id) {
+    if (id) {
       await Promise.all([
         getMovieInfo(id),
-        getSimilarData(id)
-      ])
+        // getSimilarData(id)
+      ]);
       setLoad(false);
       document?.getElementById(`${id}`)?.showModal();
     }
@@ -59,7 +70,7 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   function renderCarousel() {
     let render: any = [];
 
-    data.map((movie: { id: any; poster_path: any; title: string | undefined; }, index: number): void => {
+    data.map((movie, index): void => {
       render.push(
         <Fragment key={movie.id}>
           <div className="carousel-item  w-1/2 sm:w-2/4 lg:w-1/4">
@@ -75,7 +86,6 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
               imageURL={imageURL}
               movieGenres={movieGenres}
               provider={provider}
-              similar={similar}
               loadedCanShow={loadedCanShow}
             />
           </div>
@@ -85,9 +95,5 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
     return render;
   }
 
-  return (
-    <div className="carousel rounded-box">
-      {renderCarousel()}
-    </div>
-  );
+  return <div className="carousel rounded-box">{renderCarousel()}</div>;
 }

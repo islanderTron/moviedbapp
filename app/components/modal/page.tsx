@@ -5,11 +5,12 @@ export default function Modal({
   imageURL,
   movieGenres,
   provider,
-  similar,
+  // similar,
   loadedCanShow,
 }) {
   // Render Methods
   function renderGenres() {
+    
     if(movieGenres) {
       return movieGenres.map((genre: { name: boolean }) => {
         return <div className="badge badge-neutral badge-lg">{genre.name}</div>;
@@ -29,7 +30,17 @@ export default function Modal({
           />
         </picture>
       );
+    } else {
+      return ('')
     }
+  }
+
+  function releaseDate() {
+    return (
+      <div>
+        {movie.release_date}
+      </div>
+    )
   }
 
   function renderSimilar() {
@@ -86,15 +97,18 @@ export default function Modal({
                   {renderProvider()}
                 </div>
               </div>
+              
               <div className="p-2">
                 <p> Genres: </p>
                 {renderGenres()}
+
+                {releaseDate()}
               </div>
               <p className="p-2">{movie.overview}</p>
-              <div className="similar">
+              {/* <div className="similar">
                 Similar to this movie:
                 <div className="grid grid-cols-3 gap-4">{renderSimilar()}</div>
-              </div>
+              </div> */}
             </>
           ) : (
             <Spin />
