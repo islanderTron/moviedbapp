@@ -8,7 +8,7 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   const [provider, setProvider] = useState();
   const [isLoaded, setLoad] = useState(true);
   const [movieGenres, setMovieGenres] = useState();
-
+	const [credits, setCredits] = useState();
   // HTTP Methods
   async function getSimilarData(id: any) {
     return fetch(`/api/tmdb/movie/${id}/similar`)
@@ -27,6 +27,10 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
           setMovieGenres(info.genres);
         }
 
+				// Casts
+				setCredits(info.credits.cast.slice(0,9));
+
+				// Provider
         let hasValue =
           info &&
           info["watch/providers"] &&
@@ -34,13 +38,7 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
           info["watch/providers"].results.US &&
           info["watch/providers"].results.US.flatrate;
 
-        console.log(hasValue);
-
-        // Set watch provider for now - some of those are not in flatrate...So just show where and how we can watch them.
-        // Check the objec
         if (hasValue) {
-          console.log(info["watch/providers"].results.US);
-          // Checek if there's flaterate
           info["watch/providers"].results.US.flatrate.filter((i) => {
             fixedProviders.map((prov) => {
               if (prov.provider_id === i.provider_id) {
@@ -48,7 +46,9 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
               }
             });
           });
-        }
+        } else {
+					setProvider("")
+				}
       });
   }
 
@@ -87,6 +87,7 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
               movieGenres={movieGenres}
               provider={provider}
               loadedCanShow={loadedCanShow}
+							credits={credits}
             />
           </div>
         </Fragment>,

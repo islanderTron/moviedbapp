@@ -7,6 +7,7 @@ export default function Modal({
   provider,
   // similar,
   loadedCanShow,
+	credits
 }) {
   // Render Methods
   function renderGenres() {
@@ -19,7 +20,9 @@ export default function Modal({
   }
 
   function renderProvider() {
-    if (provider && loadedCanShow) {
+    if (provider) {
+			// console.log(provider);
+			
       return (
         <picture>
           <source srcSet={`${imageURL}/${provider.logo_path}`} type="image" />
@@ -38,7 +41,12 @@ export default function Modal({
   function releaseDate() {
     return (
       <div>
-        {movie.release_date}
+        <p>	
+					{movie.title}
+				</p> 
+				<p>
+				{movie.release_date}
+				</p>
       </div>
     )
   }
@@ -66,6 +74,21 @@ export default function Modal({
       <Spin />;
     }
   }
+
+	function castCrew() {
+		if(credits) {
+			return (
+				<div className="p-2">
+					<p>Casts: </p>
+					{credits.map((cast, index) => {
+						if(index <= 9) {
+							return <p>{cast.name} </p>
+						}
+					})}
+				</div>
+			)
+		}
+	}
 
   return (
     <dialog
@@ -99,12 +122,15 @@ export default function Modal({
               </div>
               
               <div className="p-2">
+                {releaseDate()}
                 <p> Genres: </p>
                 {renderGenres()}
 
-                {releaseDate()}
               </div>
               <p className="p-2">{movie.overview}</p>
+							<div>
+								{castCrew()}
+							</div>
               {/* <div className="similar">
                 Similar to this movie:
                 <div className="grid grid-cols-3 gap-4">{renderSimilar()}</div>
