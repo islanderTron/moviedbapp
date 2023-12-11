@@ -1,4 +1,5 @@
-import Spin from "../sping/page";
+import Spin from "../sping/page"
+import Video from "../video/page";
 
 export default function Modal({
   movie,
@@ -7,12 +8,12 @@ export default function Modal({
   provider,
   // similar,
   loadedCanShow,
-	credits
+  credits,
+  videoId
 }) {
   // Render Methods
   function renderGenres() {
-    
-    if(movieGenres) {
+    if (movieGenres) {
       return movieGenres.map((genre: { name: boolean }) => {
         return <div className="badge badge-neutral badge-lg">{genre.name}</div>;
       });
@@ -21,8 +22,6 @@ export default function Modal({
 
   function renderProvider() {
     if (provider) {
-			// console.log(provider);
-			
       return (
         <picture>
           <source srcSet={`${imageURL}/${provider.logo_path}`} type="image" />
@@ -34,27 +33,23 @@ export default function Modal({
         </picture>
       );
     } else {
-      return ('')
+      return "";
     }
   }
 
   function releaseDate() {
     return (
       <div>
-        <p>	
-					{movie.title}
-				</p> 
-				<p>
-				{movie.release_date}
-				</p>
+        <p>{movie.title}</p>
+        <p>{movie.release_date}</p>
       </div>
-    )
+    );
   }
 
   function renderSimilar() {
     let render: any = [];
-    
-    if (loadedCanShow &&  similar.results) {
+
+    if (loadedCanShow && similar.results) {
       similar.results.map((similar: any) => {
         render.push(
           <picture className="">
@@ -75,20 +70,25 @@ export default function Modal({
     }
   }
 
-	function castCrew() {
-		if(credits) {
-			return (
-				<div className="p-2">
-					<p>Casts: </p>
-					{credits.map((cast, index) => {
-						if(index <= 9) {
-							return <p>{cast.name} </p>
-						}
-					})}
-				</div>
-			)
-		}
-	}
+  function castCrew() {
+    if (credits) {
+      // console.log(movie.title);
+      return (
+        <div className="p-2">
+          <p>Casts: </p>
+          {credits.map((cast, index) => {
+            if (index <= 9) {
+              return <p>{cast.name} </p>;
+            }
+          })}
+        </div>
+      );
+    }
+  }
+
+  function renderVideo(videos) {
+    console.log(videos);
+  }
 
   return (
     <dialog
@@ -106,7 +106,7 @@ export default function Modal({
           {loadedCanShow ? (
             <>
               <div style={{position: "relative"}}>
-                <picture>
+                {/* <picture>
                   <source
                     srcSet={`${imageURL}/${movie.backdrop_path}`}
                     type="image"
@@ -115,26 +115,21 @@ export default function Modal({
                     src={`${imageURL}/${movie.backdrop_path}`}
                     alt={movie.title}
                   />
-                </picture>
+                </picture> */}
+                <Video id={videoId} />
                 <div style={{position: 'absolute', bottom: 0, right: 0}}>
                   {renderProvider()}
                 </div>
               </div>
-              
+
               <div className="p-2">
                 {releaseDate()}
                 <p> Genres: </p>
                 {renderGenres()}
-
               </div>
+
               <p className="p-2">{movie.overview}</p>
-							<div>
-								{castCrew()}
-							</div>
-              {/* <div className="similar">
-                Similar to this movie:
-                <div className="grid grid-cols-3 gap-4">{renderSimilar()}</div>
-              </div> */}
+              <div>{castCrew()}</div>
             </>
           ) : (
             <Spin />

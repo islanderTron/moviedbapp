@@ -11,7 +11,7 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
 
   try {
 
-    let url_path = `${url_movie_info}/${movie_id}?api_key=${TMDB_KEY}&append_to_response=similar,watch/providers,credits`;
+    let url_path = `${url_movie_info}/${movie_id}?api_key=${TMDB_KEY}&append_to_response=similar,watch/providers,credits,videos`;
 
     let request = await fetch(url_path)
     

@@ -15,6 +15,8 @@ import Discover from "./components/main/discover/page";
 import { providerListComma } from "./helper";
 import Trending from "./components/main/trending/page";
 
+import Video from "./components/video/page";
+
 export default function Home() {
   const [providers, setProviders] = useState(null);
   const [fixedProviders, setFixedProviders] = useState(null);
@@ -33,7 +35,7 @@ export default function Home() {
         await getImagePath(),
         await getProvidersData(),
         await getGenresData(),
-        setLoad(false)
+        setLoad(false),
         // await getTrendingData()
       ]);
     }
@@ -117,6 +119,15 @@ export default function Home() {
   // Render methods
   return (
     <main>
+      {/* <iframe
+        width="853"
+        height="480"
+        src="https://www.youtube.com/embed/UMOfKn7N6dM"
+        title="Dragon Ruler DECK and COMBOS | RANKED Yu-Gi-Oh! Master Duel"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe> */}
       {loadedCanShow ? (
         <>
           <Navbar
@@ -125,13 +136,6 @@ export default function Home() {
             imageURL={imageURL}
           />
           {
-            // <Discover
-            //   discovery={discovery}
-            //   imageURL={imageURL}
-            //   genres={genres}
-            //   fixedProviders={fixedProviders}
-            // />
-          }{
             <Trending 
               imageURL={imageURL}
               genres={genres}

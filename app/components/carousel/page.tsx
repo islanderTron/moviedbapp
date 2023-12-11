@@ -9,6 +9,8 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   const [isLoaded, setLoad] = useState(true);
   const [movieGenres, setMovieGenres] = useState();
 	const [credits, setCredits] = useState();
+  const [videoId, setVideoId] = useState();
+
   // HTTP Methods
   async function getSimilarData(id: any) {
     return fetch(`/api/tmdb/movie/${id}/similar`)
@@ -49,6 +51,12 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
         } else {
 					setProvider("")
 				}
+
+        let hasVideo = info &&
+          info.videos && 
+          info.videos.results
+        
+        setVideoId(hasVideo[0].id)
       });
   }
 
@@ -67,6 +75,8 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   const loadedCanShow = !isLoaded;
 
   // Render Methods
+
+  // Will have to move Modal component over here due to the key error. 
   function renderCarousel() {
     let render: any = [];
 
@@ -81,6 +91,7 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
               />
               <img src={`${imageURL}/${movie.poster_path}`} alt={movie.title} />
             </picture>
+
             <Modal
               movie={movie}
               imageURL={imageURL}
@@ -88,6 +99,7 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
               provider={provider}
               loadedCanShow={loadedCanShow}
 							credits={credits}
+              videoId={videoId}
             />
           </div>
         </Fragment>,
@@ -96,5 +108,9 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
     return render;
   }
 
-  return <div className="carousel rounded-box">{renderCarousel()}</div>;
+  return (
+    <div className="carousel rounded-box">
+      {renderCarousel()}
+    </div>
+);
 }
