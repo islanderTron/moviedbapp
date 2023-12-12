@@ -56,20 +56,13 @@ export default function Home() {
   // HTTP methods
   async function getProvidersData() {
     return fetch("/api/tmdb/providers")
-      .then((res) => res.json())
-      .then((res) => {
+      .then(async (res) => {
+				const data = await res.json()
+				
         // There 2 states for Providers: one is for fixed and another is to use filteer to display the list of movies
-        setFixedProviders(res.providers_list);
-        // Add a key: isShow for each obj.
-        let addEnable = res.providers_list.map(
-          (prov: { [x: string]: any }, i: string | number) => {
-            return (prov[i] = {
-              ...prov,
-              isEnable: true,
-            });
-          },
-        );
-        updateProvidersList(addEnable);
+        setFixedProviders(data.providers_list);
+        updateProvidersList(data.providers_list);
+
         setProviderIDs(addEnable.map((provider: any) => provider.provider_id));
       })
       .catch((error) => console.error(error));
@@ -100,18 +93,20 @@ export default function Home() {
 
   function getImagePath() {
     return fetch("/api/tmdb/image_config")
-      .then((res) => res.json())
-      .then((res) => {
-        setImageURL(res.url_path);
-      });
+      .then(async (res) => {
+
+				const response = (await res.json()).url_path;
+				setImageURL(response)
+			})
   }
 
   async function getGenresData() {
     return fetch("/api/tmdb/genre")
-      .then((res: any) => res.json())
-      .then((res: any) => {
-        setGenres(res.genres);
-      });
+      .then(async (res: any) => {
+				
+				const data = (await res.json()).genres
+				setGenres(data)
+			})
   }
 
   const loadedCanShow = !isLoad && providerIDs;
@@ -128,6 +123,10 @@ export default function Home() {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen
       ></iframe> */}
+
+			{/* I think this need to be very simple like this one so that we improve with design system such as HOC, custom hook, BFF and patterns. 
+				<Main /> 
+			*/}
       {loadedCanShow ? (
         <>
           <Navbar

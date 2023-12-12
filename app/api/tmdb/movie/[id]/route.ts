@@ -17,7 +17,12 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
     
     if(request.ok) {
       let movie_info = await request.json();
-      
+
+			// Provider check and get the list of providers 
+			// CURRENTLY WORKING ON THIS PROGRESS
+			console.log(movie_info['watch/providers'].results.US.flatrate);
+			
+
       return Response.json({
         movie_info,
       });

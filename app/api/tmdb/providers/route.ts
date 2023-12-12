@@ -1,15 +1,10 @@
 import { MOVIEDB } from "@/app/server/tmdb";
 export async function GET(): Promise<Response> {
-  let result;
 
 	// Def need to refactor this for sure
   try {
-    const response = await MOVIEDB.movieWatchProviderList()
-      .then((res: any) => {
-        result = res.results;
-      })
-      .catch(console.error);
-
+    const response = (await MOVIEDB.movieWatchProviderList()).results;
+		
     const providers_filter = [
       "Apple TV Plus",
       "Hulu",
@@ -21,9 +16,8 @@ export async function GET(): Promise<Response> {
     ];
 
     // I had to add extra filter out due to duplicate on TMDB's API streaming providers.
-
     let providers_list = [];
-    result.filter((provider) => {
+    response.filter((provider) => {
       if (
         providers_filter.includes(provider.provider_name) &&
         provider.provider_id !== 119
@@ -33,11 +27,13 @@ export async function GET(): Promise<Response> {
           logo_path: provider.logo_path,
           provider_name: provider.provider_name,
           provider_id: provider.provider_id,
+					isEnable: true
         });
       }
     });
 
     return Response.json({
+			// test: '101'
       providers_list,
     });
   } catch (error) {

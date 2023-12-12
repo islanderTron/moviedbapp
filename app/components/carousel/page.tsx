@@ -14,16 +14,18 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   // HTTP Methods
   async function getSimilarData(id: any) {
     return fetch(`/api/tmdb/movie/${id}/similar`)
-      .then((res: any) => res.json())
-      .then((res: any) => setSimilar(res.similar))
+      .then(async (res: any) => {
+				
+				const data = (await res.json()).similar;
+				setSimilar(data)
+			})
       .catch((error: any) => console.error(error));
   }
 
   async function getMovieInfo(id: number) {
     return fetch(`/api/tmdb/movie/${id}`)
-      .then((res: any) => res.json())
-      .then((res: any) => {
-        let info = res.movie_info;
+      .then(async (res: any) => {
+        const info = (await res.json()).movie_info;
         // Set Genres
         if (genres) {
           setMovieGenres(info.genres);
@@ -33,6 +35,7 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
 				setCredits(info.credits.cast.slice(0,9));
 
 				// Provider
+				// The logic should be in /api/tmdb/movie/:id 
         let hasValue =
           info &&
           info["watch/providers"] &&
