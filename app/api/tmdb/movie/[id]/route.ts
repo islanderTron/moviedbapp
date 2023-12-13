@@ -4,8 +4,10 @@ import * as dotenv from "dotenv";
 dotenv.config();
 const { TMDB_KEY } = process.env;
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-  const movie_id = res.params.id;
+export async function POST(req, res) {
+	let data = await req.json();
+	
+	const movie_id = res.params.id;
   let localization = "US";
   let url_movie_info = "https://api.themoviedb.org/3/movie/";
 
@@ -18,10 +20,17 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
     if(request.ok) {
       let movie_info = await request.json();
 
-			// Provider check and get the list of providers 
-			// CURRENTLY WORKING ON THIS PROGRESS
-			console.log(movie_info['watch/providers'].results.US.flatrate);
+			let hasValue =
+				movie_info["watch/providers"] &&
+				movie_info["watch/providers"].results &&
+				movie_info["watch/providers"].results.US &&
+				movie_info["watch/providers"].results.US.flatrate;
 			
+			if (hasValue) {
+				let selected_provider = movie_info["watch/providers"].results.US.flatrate.filter((i) => data.find((provider) => provider.provider_id === i.provider_id))
+				
+				movie_info['provider'] = selected_provider				
+			}
 
       return Response.json({
         movie_info,

@@ -12,53 +12,29 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   const [videoId, setVideoId] = useState();
 
   // HTTP Methods
-  async function getSimilarData(id: any) {
-    return fetch(`/api/tmdb/movie/${id}/similar`)
-      .then(async (res: any) => {
-				
-				const data = (await res.json()).similar;
-				setSimilar(data)
-			})
-      .catch((error: any) => console.error(error));
-  }
-
   async function getMovieInfo(id: number) {
-    return fetch(`/api/tmdb/movie/${id}`)
+    return fetch(`/api/tmdb/movie/${id}`, {
+			method: 'POST',
+			body: JSON.stringify(fixedProviders)
+		})
       .then(async (res: any) => {
         const info = (await res.json()).movie_info;
-        // Set Genres
+
         if (genres) {
           setMovieGenres(info.genres);
         }
 
-				// Casts
 				setCredits(info.credits.cast.slice(0,9));
 
-				// Provider
-				// The logic should be in /api/tmdb/movie/:id 
-        let hasValue =
-          info &&
-          info["watch/providers"] &&
-          info["watch/providers"].results &&
-          info["watch/providers"].results.US &&
-          info["watch/providers"].results.US.flatrate;
-
-        if (hasValue) {
-          info["watch/providers"].results.US.flatrate.filter((i) => {
-            fixedProviders.map((prov) => {
-              if (prov.provider_id === i.provider_id) {
-                setProvider(prov);
-              }
-            });
-          });
-        } else {
-					setProvider("")
+				if(info.provider) {
+					setProvider(info.provider[0])
+				} else {
+					setProvider('');
 				}
-
+				
         let hasVideo = info &&
           info.videos && 
           info.videos.results
-        
         setVideoId(hasVideo[0].id)
       });
   }
@@ -78,8 +54,6 @@ export default function Carousel({ data, imageURL, genres, fixedProviders }) {
   const loadedCanShow = !isLoaded;
 
   // Render Methods
-
-  // Will have to move Modal component over here due to the key error. 
   function renderCarousel() {
     let render: any = [];
 

@@ -57,13 +57,12 @@ export default function Home() {
   async function getProvidersData() {
     return fetch("/api/tmdb/providers")
       .then(async (res) => {
-				const data = await res.json()
+				const data = (await res.json()).providers_list				
 				
-        // There 2 states for Providers: one is for fixed and another is to use filteer to display the list of movies
-        setFixedProviders(data.providers_list);
-        updateProvidersList(data.providers_list);
+        setFixedProviders(data);
+        updateProvidersList(data);
 
-        setProviderIDs(addEnable.map((provider: any) => provider.provider_id));
+        setProviderIDs(data.map((provider: any) => provider.provider_id));
       })
       .catch((error) => console.error(error));
   }

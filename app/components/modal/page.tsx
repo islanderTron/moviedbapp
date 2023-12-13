@@ -72,7 +72,6 @@ export default function Modal({
 
   function castCrew() {
     if (credits) {
-      // console.log(movie.title);
       return (
         <div className="p-2">
           <p>Casts: </p>
@@ -106,7 +105,7 @@ export default function Modal({
           {loadedCanShow ? (
             <>
               <div style={{position: "relative"}}>
-                {/* <picture>
+                <picture>
                   <source
                     srcSet={`${imageURL}/${movie.backdrop_path}`}
                     type="image"
@@ -115,8 +114,8 @@ export default function Modal({
                     src={`${imageURL}/${movie.backdrop_path}`}
                     alt={movie.title}
                   />
-                </picture> */}
-                <Video id={videoId} />
+                </picture>
+                {/* <Video id={videoId} /> */}
                 <div style={{position: 'absolute', bottom: 0, right: 0}}>
                   {renderProvider()}
                 </div>
