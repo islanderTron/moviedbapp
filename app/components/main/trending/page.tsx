@@ -2,13 +2,9 @@ import Carousel from "$app/components/carousel/page";
 import Spin from "$app/components/sping/page";
 import { useEffect, useState } from "react";
 
-export default function Trending({ imageURL, genres, fixedProviders }) {
+export default function Trending({ imageURL, fixedProviders }) {
   const [trends, setTrends] = useState();
   const [timeWindow, setTimeWindow] = useState("day");
-
-  useEffect(() => {
-    getTrendingData();
-  }, []);
 
   useEffect(() => {
     getTrendingData();
@@ -39,6 +35,7 @@ export default function Trending({ imageURL, genres, fixedProviders }) {
       </ul>
     );
   }
+  
   return (
     <div>
       <div>
@@ -51,7 +48,6 @@ export default function Trending({ imageURL, genres, fixedProviders }) {
           <Carousel
             data={trends}
             imageURL={imageURL}
-            genres={genres}
             fixedProviders={fixedProviders}
           />
         ) : (
