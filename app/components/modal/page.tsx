@@ -48,8 +48,6 @@ export default function Modal({
   }
 
   function castCrew() {
-    console.log(movieData);
-    
     const credit = movieData.credits.cast.slice(0, 9);
     return (
       <div className="p-2">

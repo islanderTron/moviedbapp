@@ -12,9 +12,12 @@ export default function Trending({ imageURL, fixedProviders }) {
 
   // HTTP methods
   async function getTrendingData() {
-    return fetch(`/api/tmdb/trending?time_window=${timeWindow}`)
-      .then((res: any) => res.json())
-      .then((res: any) => setTrends(res.trending_info.results));
+    return fetch(`/api/tmdb/trending?time_window=${timeWindow}&total=3`)
+      .then(async (res: any) => {
+				const data = (await res.json()).trending_info.results;
+				
+				setTrends(data.slice(0,9))
+			})
   }
 
   // Event Handler
