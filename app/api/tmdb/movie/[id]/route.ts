@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 import * as dotenv from "dotenv";
+import { MOVIEDB } from "@/app/server/tmdb";
 dotenv.config();
 const { TMDB_KEY } = process.env;
 
@@ -13,23 +14,23 @@ export async function POST(req, res) {
 
   try {
 
-    let url_path = `${url_movie_info}/${movie_id}?api_key=${TMDB_KEY}&append_to_response=similar,watch/providers,credits,videos`;
+    let url_path = `${url_movie_info}/${movie_id}?api_key=${TMDB_KEY}&append_to_response=similar,credits,videos`;
 
     let request = await fetch(url_path)
     
     if(request.ok) {
       let movie_info = await request.json();
-
+      let selected_provider = await MOVIEDB.movieWatchProviders({ id: movie_id });
+      
 			let hasValue =
-				movie_info["watch/providers"] &&
-				movie_info["watch/providers"].results &&
-				movie_info["watch/providers"].results.US &&
-				movie_info["watch/providers"].results.US.flatrate;
-			
+				selected_provider &&
+				selected_provider.results &&
+				selected_provider.results.US &&
+				selected_provider.results.US.flatrate && 
+        selected_provider.results.US.flatrate;
+        
 			if (hasValue) {
-				let selected_provider = movie_info["watch/providers"].results.US.flatrate.filter((i) => data.find((provider) => provider.provider_id === i.provider_id))
-				
-				movie_info['provider'] = selected_provider				
+				movie_info['provider'] = hasValue
 			}
 
       return Response.json({

@@ -24,17 +24,19 @@ export default function Modal({
     const haveProvider = movieData.provider
     
     if(haveProvider) {
-      let providerData = movieData.provider[0];
-      return (
-        <picture>
-          <source srcSet={`${imageURL}/${providerData.logo_path}`} type="image" />
-          <img
-            className="w-20 mask mask-circle"
-            src={`${imageURL}/${providerData.logo_path}`}
-            alt={providerData.provider_name}
-          />
-        </picture>
-      );
+      let providerData = movieData.provider;
+      providerData.map(prov => {
+        return (
+          <picture>
+            <source srcSet={`${imageURL}/${prov.logo_path}`} type="image" />
+            <img
+              className="w-20 mask mask-circle"
+              src={`${imageURL}/${prov.logo_path}`}
+              alt={prov.provider_name}
+            />
+          </picture>
+        );
+      })
     }
   }
 

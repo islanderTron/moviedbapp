@@ -31,14 +31,17 @@ export default function Main() {
 
   // HTTP methods
   async function getProvidersData() {
-    return fetch("/api/tmdb/providers")
+    return fetch("/api/tmdb/providers", {
+      method: "GET"
+    })
       .then(async (res) => {
         const data = (await res.json()).providers_list;
-
+        
         setFixedProviders(data);
         updateProvidersList(data);
 
         setProviderIDs(data.map((provider: any) => provider.provider_id));
+        
       })
       .catch((error) => console.error(error));
   }
@@ -64,7 +67,7 @@ export default function Main() {
     });
   }
 
-  const loadedCanShow = !isLoad && providerIDs;
+  const loadedCanShow = !isLoad;
 
   // Render methods
   return (
@@ -74,7 +77,9 @@ export default function Main() {
         providers={providers}
         imageURL={imageURL}
       />
-      <Trending imageURL={imageURL} fixedProviders={fixedProviders} />
+      {loadedCanShow && 
+        <Trending imageURL={imageURL} fixedProviders={fixedProviders} />
+      }
     </main>
   );
 }

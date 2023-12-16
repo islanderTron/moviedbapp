@@ -12,12 +12,13 @@ export default function Trending({ imageURL, fixedProviders }) {
 
   // HTTP methods
   async function getTrendingData() {
-    return fetch(`/api/tmdb/trending?time_window=${timeWindow}&total=3`)
-      .then(async (res: any) => {
-				const data = (await res.json()).trending_info.results;
-				
-				setTrends(data.slice(0,9))
-			})
+    return fetch(`/api/tmdb/trending?time_window=${timeWindow}&total=10`, {
+      method: "POST",
+      body: JSON.stringify(fixedProviders),
+    }).then(async (res: any) => {
+      const data = (await res.json()).trending_data;
+      setTrends(data);
+    });
   }
 
   // Event Handler
@@ -38,7 +39,7 @@ export default function Trending({ imageURL, fixedProviders }) {
       </ul>
     );
   }
-  
+
   return (
     <div>
       <div>
