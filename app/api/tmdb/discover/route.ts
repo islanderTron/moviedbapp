@@ -10,6 +10,7 @@ import { convertCommantoL } from "@/app/helper";
  * @returns 
  */
 export async function GET({ url }): Promise<Response> {
+	// https://developer.themoviedb.org/reference/discover-movie
 	type Results = {
 		adult: boolean,
 		backdrop_path: string,
@@ -32,7 +33,6 @@ export async function GET({ url }): Promise<Response> {
 		total_pages: number,
 		total_results: number
 	}
-
 	type Request = {
 		certification: string,
 		"certification.gte": string,
@@ -58,7 +58,7 @@ export async function GET({ url }): Promise<Response> {
 		with_cast: string,
 		with_companies: string,
 		with_crew: string,
-		with_genres: string,	
+		with_genres: string,	// can be a comma (AND) or pipe (OR) separated query
 		with_keywords: string,
 		with_origin_country: string,
 		with_original_language: string,
@@ -85,6 +85,7 @@ export async function GET({ url }): Promise<Response> {
 	const response = await MOVIEDB.discoverMovie({
 		watch_region: "US",
 		with_watch_providers: `${providerList}`,
+		// with_genres: 
 	});
 
 	return Response.json({
