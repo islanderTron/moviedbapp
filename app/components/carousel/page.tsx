@@ -1,8 +1,14 @@
 "use client";
 import Modal from "$app/components/modal/page";
+import { relative } from "path";
 import { useState } from "react";
 
-export default function Carousel({ data, imageURL, fixedProviders }) {
+export default function Carousel({
+  data,
+  imageURL,
+  fixedProviders,
+  showOrder,
+}) {
   const [provider, setProvider] = useState();
   const [isLoaded, setLoad] = useState(true);
   const [movieGenres, setMovieGenres] = useState();
@@ -50,45 +56,57 @@ export default function Carousel({ data, imageURL, fixedProviders }) {
   const loadedCanShow = selectedMovie ?? !isLoaded;
 
   // Render Methods
-  function renderPoster(movie) {
+  // Need to work on the style condition ***** 
+  function renderPoster(movie, index: number) {
     return (
       <div style={{ position: "relative" }}>
-        <picture onClick={() => openModal(movie.id)}>
-          <source srcSet={`${imageURL}/${movie.poster_path}`} type="image" />
-          <img src={`${imageURL}/${movie.poster_path}`} alt={movie.title} />
-        </picture>
+        {showOrder === true ? (
+          <>
+            <span
+              className="text-9xl"
+              style={{
+                position: "absolute",
+                bottom: 0,
+                width: "15%",
+              }}
+            >
+              {index}
+            </span>
+          </>
+        ): <></>}
 
-        <div className="flex" style={{position: "absolute", width: '100%', bottom: 0}}>
-          {movie.provider ? (
-            movie.provider.map((prov: any) => {
-              return (
-                <picture className="w-3/12 mask mask-circle" key={movie.provider[0].id}>
-                  <source srcSet={`${imageURL}/${movie.provider[0].logo_path}`} type="image"/>
-                  <img src={`${imageURL}/${movie.provider[0].logo_path}`} alt={movie.provider[0].title} />
-                </picture>
-              );
-            })
-            // <picture key={movie.provider[0].id} className="w-3/12 mask mask-circle">
-            //       <source srcSet={`${imageURL}/${movie.provider[0].logo_path}`} type="image"/>
-            //       <img src={`${imageURL}/${movie.provider[0].logo_path}`} alt={movie.provider[0].title} />
-            //     </picture>
-          ) : (
-            <></>
-          )}
-        </div>
-
+        {showOrder === true ?
+        <img
+          src={`${imageURL}/${movie.poster_path}`}
+          alt={movie.title}
+          width={300}
+          onClick={() => openModal(movie.id)}
+        />
+          :
+          <img
+          style={{
+            position: "relative",
+            left: "20%",
+            width: "80%",
+          }}
+          src={`${imageURL}/${movie.poster_path}`}
+          alt={movie.title}
+          width={300}
+          onClick={() => openModal(movie.id)}
+        />
+        }
       </div>
     );
   }
   return (
-    <div className="carousel rounded-box">
-      {data.map((movie: any) => {
+    <div
+      className="carousel rounded-box w-full"
+      style={{ position: "relative" }}
+    >
+      {data.map((movie: any, index: number) => {
         return (
-          <div
-            key={movie.id}
-            className="carousel-item  w-1/2 sm:w-2/4 lg:w-1/4"
-          >
-            {renderPoster(movie)}
+          <div key={movie.id} className="carousel-item w-80 h-full">
+            {renderPoster(movie, index + 1)}
             <Modal
               movie={movie}
               imageURL={imageURL}

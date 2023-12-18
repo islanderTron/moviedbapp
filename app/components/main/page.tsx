@@ -78,7 +78,7 @@ export default function Main() {
         imageURL={imageURL}
       />
       {loadedCanShow && 
-        <Trending imageURL={imageURL} fixedProviders={fixedProviders} />
+        <Trending imageURL={imageURL} fixedProviders={fixedProviders} showOrder={true} />
       }
     </main>
   );

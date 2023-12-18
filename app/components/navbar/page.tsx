@@ -114,8 +114,8 @@ export default function Navbar({ updateProvidersList, providers, imageURL }) {
   return (
     <div className="navbar">
       <div className="grid sm:grid-row-1 grid-rows-1">
-        <a className="btn btn-ghost text-xl">Streaming App Movies </a>
-        {providerList()}
+        <a className="btn btn-ghost text-xl">Movie Search Library </a>
+        {/* {providerList()} */}
       </div>
     </div>
   );

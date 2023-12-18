@@ -2,7 +2,7 @@ import Carousel from "$app/components/carousel/page";
 import Spin from "$app/components/sping/page";
 import { useEffect, useState } from "react";
 
-export default function Trending({ imageURL, fixedProviders }) {
+export default function Trending({ imageURL, fixedProviders, showOrder }) {
   const [trends, setTrends] = useState();
   const [timeWindow, setTimeWindow] = useState("day");
 
@@ -43,21 +43,20 @@ export default function Trending({ imageURL, fixedProviders }) {
   return (
     <div>
       <div>
-        <div>
-          <span className="text-2xl">Trending</span>
-          {renderSwitch()}
-        </div>
-
-        {trends ? (
-          <Carousel
-            data={trends}
-            imageURL={imageURL}
-            fixedProviders={fixedProviders}
-          />
-        ) : (
-          <Spin />
-        )}
+        <span className="text-2xl">Trending</span>
+        {renderSwitch()}
       </div>
+
+      {trends ? (
+        <Carousel
+          data={trends}
+          imageURL={imageURL}
+          fixedProviders={fixedProviders}
+          showOrder={showOrder}
+        />
+      ) : (
+        <Spin />
+      )}
     </div>
   );
 }
