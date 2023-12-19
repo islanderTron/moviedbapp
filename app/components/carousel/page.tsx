@@ -1,6 +1,5 @@
 "use client";
 import Modal from "$app/components/modal/page";
-import { relative } from "path";
 import { useState } from "react";
 
 export default function Carousel({
@@ -56,37 +55,31 @@ export default function Carousel({
   const loadedCanShow = selectedMovie ?? !isLoaded;
 
   // Render Methods
-	function renderOrder(index: number) {
-		if(showOrder === true) {
-			return <span className="text-6xl absolute bottom-0 w-1/4">
-				{index}
-			</span>
-		}
-	}
-  // Need to work on the style condition ***** 
   function renderPoster(movie, index: number) {
     return (
-      <div style={{ position: "relative"}} >
-        {renderOrder(index)}
-				
+      <div className="relative">
+         {showOrder === true && (
+          <span className="text-6xl sm:text-9xl absolute bottom-0 left-0 w-1/4">
+            {index}
+          </span>
+        )}
         <img
           src={`${imageURL}/${movie.poster_path}`}
           alt={movie.title}
-          width={300}
           onClick={() => openModal(movie.id)}
-					className={`${showOrder ? 'left-7 w-3/4 relative' : 'w-full'} h-auto rounded-lg`}
+          className={`${
+            showOrder ? "left-7 sm:left-16 w-3/4" : "w-full"
+          } h-full`}
         />
       </div>
     );
   }
+  
   return (
-    <div
-      className="carousel rounded-box w-full"
-      style={{ position: "relative" }}
-    >
+    <div className="carousel rounded-box w-full">
       {data.map((movie: any, index: number) => {
         return (
-          <div key={movie.id} className="carousel-item w-32 sm:w-80">
+          <div key={movie.id} className="carousel-item w-32 sm:w-64">
             {renderPoster(movie, index + 1)}
             <Modal
               movie={movie}

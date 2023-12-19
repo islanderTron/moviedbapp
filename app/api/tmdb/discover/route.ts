@@ -9,7 +9,7 @@ import { convertCommantoL } from "@/app/helper";
  * @param param0 
  * @returns 
  */
-export async function GET({ url }): Promise<Response> {
+export async function GET(req, res): Promise<Response> {
 	// https://developer.themoviedb.org/reference/discover-movie
 	type Results = {
 		adult: boolean,
@@ -79,16 +79,23 @@ export async function GET({ url }): Promise<Response> {
 
 	}
 
-	let arr = url.split('providers=')[1].split(',')
-	let providerList = convertCommantoL(arr)
+	const searchParams = req.nextUrl.searchParams
+	// let arr = url.split('providers=')[1].split(',')
+	// let providerList = convertCommantoL(arr)
+	// let total = null;
 
-	const response = await MOVIEDB.discoverMovie({
-		watch_region: "US",
-		with_watch_providers: `${providerList}`,
-		// with_genres: 
-	});
+	if(searchParams.get('total')) {
+
+	}
+	
+	// const response = await MOVIEDB.discoverMovie({
+	// 	watch_region: "US",
+	// 	with_watch_providers: `${providerList}`,
+	// 	// with_genres: 
+	// });
 
 	return Response.json({
-		response,
+		// response,
+		'test': 'hello world'
 	});
 }
