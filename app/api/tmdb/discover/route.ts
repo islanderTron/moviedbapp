@@ -81,18 +81,40 @@ export async function GET(req, res): Promise<Response> {
 
 	const searchParams = req.nextUrl.searchParams
 	// let arr = url.split('providers=')[1].split(',')
-	// let providerList = convertCommantoL(arr)
+	// let providerList;
+	// let providers = null;
+	// let genres = null;
 	// let total = null;
 
-	if(searchParams.get('total')) {
-
+	let requestDiscover = {
+		providers: null,
+		total: null,
+		genres: null
 	}
 	
-	// const response = await MOVIEDB.discoverMovie({
-	// 	watch_region: "US",
-	// 	with_watch_providers: `${providerList}`,
-	// 	// with_genres: 
-	// });
+	if(searchParams.get('providers') !== null) {
+		requestDiscover.providers = searchParams.get('providers')
+	}
+
+	if(searchParams.get('total') !== null) {
+		requestDiscover.total = searchParams.get('total')
+	}
+
+	if(searchParams.get('genres') !== null) {
+		requestDiscover.genres = searchParams.get('genres')
+	}
+	
+	// const url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_watch_providers=8%2C9%2C15%2C350%2C384%2C531';
+
+	const response = await MOVIEDB.discoverMovie({
+		watch_region: "US",
+		with_watch_providers: `8|9|15|350|384|531`
+		// with_genres: 
+	});
+
+	// Need handle the error if the response return empty
+	console.log(response);
+	
 
 	return Response.json({
 		// response,
