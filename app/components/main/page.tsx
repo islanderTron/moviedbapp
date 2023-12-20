@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 // Componemts
 import Navbar from "$app/components/navbar/page";
 import Trending from "$app/components/main/trending/page";
+import Discover from "$app/components/main/discover/page";
 
 export default function Main() {
   const [providers, setProviders] = useState(null);
@@ -78,7 +79,10 @@ export default function Main() {
         imageURL={imageURL}
       />
       {loadedCanShow && 
+			<>
         <Trending imageURL={imageURL} fixedProviders={fixedProviders} showOrder={true} />
+        <Discover imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />
+			</>
       }
     </main>
   );

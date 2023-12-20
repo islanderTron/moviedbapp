@@ -1,24 +1,40 @@
+import { useEffect, useState } from "react"
 import Carousel from "../../carousel/page"
 import Spin from "../../sping/page"
-export default function Discover({discovery, imageURL, genres, fixedProviders}) {
+export default function Discover({ imageURL, fixedProviders, showOrder }) {
+	const [discoverData, setDiscoverData] = useState();
+
+	useEffect(() => {
+		getDiscoverData()
+	}, [])
+
+	async function getDiscoverData() {
+		return fetch(`/api/tmdb/discover?providers=8|9|15|350|384|531&total=20&providerImages=true`, {
+			method: 'POST',
+			body: JSON.stringify(fixedProviders)
+		})
+			.then(async (res) => {
+				const data = (await res.json()).discoverData
+				setDiscoverData(data)
+			})
+	}
+
   return (
     <div>
-      <div>
         <div>
-          <p className="text-2xl">Most Popular</p>
+          <p className="text-2xl">Movie Services</p>
         </div>
 
-        {discovery ? (
+        {discoverData ? (
           <Carousel
-            data={discovery}
-            imageURL={imageURL}
-            genres={genres}
-            fixedProviders={fixedProviders}
+						data={discoverData}
+						imageURL={imageURL}
+						fixedProviders={fixedProviders}
+						showOrder={showOrder}
           />
         ) : (
           <Spin />
         )}
-      </div>
     </div> 
   )
 }
