@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import Navbar from "$app/components/navbar/page";
 import Trending from "$app/components/main/trending/page";
 import Discover from "$app/components/main/discover/page";
+import Netflix from "$app/components/main/netflix/page";
+import Amazon from "@/app/components/main/amazon/page";
 
 export default function Main() {
   const [providers, setProviders] = useState(null);
@@ -82,6 +84,8 @@ export default function Main() {
 			<>
         <Trending imageURL={imageURL} fixedProviders={fixedProviders} showOrder={true} />
         <Discover imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />
+        <Netflix imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />
+        <Amazon imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />
 			</>
       }
     </main>

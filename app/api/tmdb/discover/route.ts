@@ -2,7 +2,7 @@
 import { MOVIEDB } from "@/app/server/tmdb";
 
 // Helper 
-import { convertCommantoL } from "@/app/helper";
+import { convertCommantoL, filterProviders } from "@/app/helper";
 
 /**
  * This is a heart of discovery movies
@@ -38,26 +38,7 @@ export async function POST(req, res): Promise<Response> {
 		}
 		
 		if(searchParams.get('providerImages')) {
-			// Need to reuse this code on helper.ts
-			for(let [index, movie] of Object.entries(discoverData)) {
-				let selected_provider = await MOVIEDB.movieWatchProviders({ id: movie.id });
-
-				let hasFlatValue =
-          selected_provider &&
-          selected_provider.results &&
-          selected_provider.results.US &&
-          selected_provider.results.US.flatrate &&
-          selected_provider.results.US.flatrate;
-
-				// Filter out share services. 
-				let matchProviders = hasFlatValue.filter((flat: any) => providersData.find(prov => prov.provider_id === flat.provider_id))
-        
-        // Add a key and value for provider
-        discoverData[index] = {
-          ...discoverData[index],
-          provider: matchProviders ? matchProviders : null
-        }
-			}
+			discoverData = await filterProviders(providersData, discoverData)
 		}
 
 		return Response.json({

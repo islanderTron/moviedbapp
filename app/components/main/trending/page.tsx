@@ -12,7 +12,7 @@ export default function Trending({ imageURL, fixedProviders, showOrder }) {
 
   // HTTP methods
   async function getTrendingData() {
-    return fetch(`/api/tmdb/trending?time_window=${timeWindow}&total=10`, {
+    return fetch(`/api/tmdb/trending?time_window=${timeWindow}&total=10&providerImages`, {
       method: "POST",
       body: JSON.stringify(fixedProviders),
     }).then(async (res: any) => {

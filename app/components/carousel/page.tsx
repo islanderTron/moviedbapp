@@ -1,5 +1,7 @@
 "use client";
 import Modal from "$app/components/modal/page";
+import ProviderImage from "$app/components/providerImage/page";
+
 import { useState } from "react";
 
 export default function Carousel({
@@ -55,22 +57,36 @@ export default function Carousel({
   const loadedCanShow = selectedMovie ?? !isLoaded;
 
   // Render Methods
-  function renderPoster(movie, index: number) {
+  function renderPoster(movie, index: number) {    
     return (
       <div className="relative">
-         {showOrder === true && (
-          <span className="text-6xl sm:text-9xl absolute bottom-0 left-0 w-1/4">
-            {index}
-          </span>
-        )}
-        <img
-          src={`${imageURL}/${movie.poster_path}`}
-          alt={movie.title}
-          onClick={() => openModal(movie.id)}
-          className={`${
-            showOrder ? "left-7 sm:left-16 w-3/4" : "w-full"
-          } h-full`}
-        />
+        <div className="absolute top-0">
+          {showOrder === true && (
+            <span className="text-6xl sm:text-9xl w-1/4">
+              {index}
+            </span>
+          )}
+        </div>
+        <div className={`${
+              showOrder ? "left-8 sm:left-16 w-3/4 relative" : "w-full"
+            } h-full`}> 
+          
+          <img
+            src={`${imageURL}/${movie.poster_path}`}
+            alt={movie.title}
+            onClick={() => openModal(movie.id)}
+          />
+          <div className="flex flex-row absolute bottom-0">
+            {movie.provider && movie.provider.map((prov, index) => {
+              return (
+              <span key={`${index}`}>
+                <ProviderImage imageURL={imageURL} logo_path={prov.logo_path} provider_name={prov.provider_name} />
+              </span>
+              )
+            })}
+
+          </div>
+        </div>
       </div>
     );
   }

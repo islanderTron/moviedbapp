@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Carousel from "../../carousel/page"
 import Spin from "../../sping/page"
-export default function Discover({ imageURL, fixedProviders, showOrder }) {
+export default function Test({ imageURL, fixedProviders, showOrder }) {
 	const [discoverData, setDiscoverData] = useState();
 
 	useEffect(() => {
@@ -9,7 +9,7 @@ export default function Discover({ imageURL, fixedProviders, showOrder }) {
 	}, [])
 
 	async function getDiscoverData() {
-		return fetch(`/api/tmdb/discover?providers=8|9|15|350|384|531&total=20&providerImages=true`, {
+		return fetch(`/api/tmdb/discover?providers=9&total=20&providerImages=true`, {
 			method: 'POST',
 			body: JSON.stringify(fixedProviders)
 		})
@@ -22,7 +22,7 @@ export default function Discover({ imageURL, fixedProviders, showOrder }) {
   return (
     <div>
         <div>
-          <p className="text-2xl">Discovery</p>
+          <p className="text-2xl">Amazon Prime Video</p>
         </div>
 
         {discoverData ? (
