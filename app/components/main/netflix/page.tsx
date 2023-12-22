@@ -22,7 +22,7 @@ export default function Netflix({ imageURL, fixedProviders, showOrder }) {
   return (
     <div>
         <div>
-          <p className="text-2xl">Netflix</p>
+          <p className="text-2xl ml-5">Netflix</p>
         </div>
 
         {discoverData ? (

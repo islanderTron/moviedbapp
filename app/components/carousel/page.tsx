@@ -4,7 +4,7 @@ import ProviderImage from "$app/components/providerImage/page";
 
 import { useState } from "react";
 
-export default function Carousel({
+export default function Page({
   data,
   imageURL,
   fixedProviders,
@@ -62,7 +62,7 @@ export default function Carousel({
       <div className="relative">
         <div className="absolute top-0">
           {showOrder === true && (
-            <span className="text-6xl sm:text-9xl w-1/4">
+            <span className="text-6xl sm:text-9xl w-1/4" style={{letterSpacing: '-25px'}}>
               {index}
             </span>
           )}

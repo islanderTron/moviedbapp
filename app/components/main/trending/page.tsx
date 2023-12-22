@@ -43,7 +43,7 @@ export default function Trending({ imageURL, fixedProviders, showOrder }) {
   return (
     <div>
       <div>
-        <span className="text-2xl">Trending</span>
+        <span className="text-2xl ml-5">Trending</span>
         {renderSwitch()}
       </div>
 

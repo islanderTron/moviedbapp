@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import Carousel from "../../carousel/page"
-import Spin from "../../sping/page"
+import Carousel from "$app/components/carousel/page"
+import Spin from "$app/components/sping/page"
 export default function Test({ imageURL, fixedProviders, showOrder }) {
 	const [discoverData, setDiscoverData] = useState();
 
@@ -22,7 +22,7 @@ export default function Test({ imageURL, fixedProviders, showOrder }) {
   return (
     <div>
         <div>
-          <p className="text-2xl">Amazon Prime Video</p>
+          <p className="text-2xl ml-5">Amazon Prime Video</p>
         </div>
 
         {discoverData ? (

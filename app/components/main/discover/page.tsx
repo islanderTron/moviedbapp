@@ -22,7 +22,7 @@ export default function Discover({ imageURL, fixedProviders, showOrder }) {
   return (
     <div>
         <div>
-          <p className="text-2xl">Discovery</p>
+          <p className="text-2xl ml-5">Discovery</p>
         </div>
 
         {discoverData ? (

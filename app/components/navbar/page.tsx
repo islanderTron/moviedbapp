@@ -1,3 +1,5 @@
+import Dropdown from '$app/components/dropdown/page';
+
 export default function Navbar({ updateProvidersList, providers, imageURL }) {
   // Lifecycle
 
@@ -115,7 +117,7 @@ export default function Navbar({ updateProvidersList, providers, imageURL }) {
     <div className="navbar">
       <div className="grid sm:grid-row-1 grid-rows-1">
         <a className="btn btn-ghost text-xl">Movie Search Library </a>
-        {/* {providerList()} */}
+        <Dropdown />
       </div>
     </div>
   );
