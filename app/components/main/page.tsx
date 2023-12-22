@@ -76,9 +76,9 @@ export default function Main() {
   return (
     <main>
       <Navbar
-        updateProvidersList={updateProvidersList}
-        providers={providers}
-        imageURL={imageURL}
+        // updateProvidersList={updateProvidersList}
+        // providers={providers}
+        // imageURL={imageURL}
       />
       {loadedCanShow && 
 			<>

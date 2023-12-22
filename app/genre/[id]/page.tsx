@@ -1,5 +1,11 @@
+import Navbar from "@/app/components/navbar/page"
+
 export default function Page({ params } : {params: {id: string}}) {
+	
   return (
-    <p>{params.id}</p>
+		<main>
+			<Navbar />
+			<p>{params.id}</p>
+		</main>
   )
 }
