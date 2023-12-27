@@ -32,6 +32,13 @@ export default function Main() {
     callAll();
   }, []);
 
+	useEffect(() => {
+		async function callAll() {
+			// Call the requests: discover, trending, netflix, and amazon 
+			return Promise.all([])
+		}
+	}, [imageURL])
+
   // HTTP methods
   async function getProvidersData() {
     return fetch("/api/tmdb/providers", {
@@ -82,6 +89,7 @@ export default function Main() {
       />
       {loadedCanShow && 
 			<>
+			{/* I think this is where need to use promise all for 4 requests to improve with performance - parallel data fetch  */}
         <Trending imageURL={imageURL} fixedProviders={fixedProviders} showOrder={true} />
         <Discover imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />
         <Netflix imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />

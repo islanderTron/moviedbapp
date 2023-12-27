@@ -37,8 +37,8 @@ export default function Page({
         setProvider("");
       }
 
-      let hasVideo = info && info.videos && info.videos.results;
-      setVideoId(hasVideo[0].id);
+      // let hasVideo = info && info.videos && info.videos.results;
+      // setVideoId(hasVideo[0].id);
     });
   }
 
@@ -54,7 +54,7 @@ export default function Page({
     }
   }
 
-  const loadedCanShow = selectedMovie ?? !isLoaded;
+  const loadedCanShow = selectedMovie && !isLoaded;
 
   // Render Methods
   function renderPoster(movie, index: number) {    
