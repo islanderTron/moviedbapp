@@ -37,9 +37,9 @@ export async function POST(req, res): Promise<Response> {
 			discoverData = data.slice(0, numShowMovies)
 		}
 		
-		if(searchParams.get('providerImages')) {
-			discoverData = await filterProviders(providersData, discoverData)
-		}
+		// if(searchParams.get('providerImages')) {
+		// 	discoverData = await filterProviders(providersData, discoverData)
+		// }
 
 		return Response.json({
 			discoverData

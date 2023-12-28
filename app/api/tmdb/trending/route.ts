@@ -17,8 +17,28 @@ export async function POST(req, res) {
       let data = (await request).results.slice(0, total);
       let trending_data: any = data;
 
-      trending_data = await filterProviders(providersData, trending_data);
+			// trending_data = await filterProviders(providersData, trending_data);
 
+			for(let [index, movie] of Object.entries(data)) {
+				let selected_provider = await MOVIEDB.movieWatchProviders({ id: movie.id });
+
+				let hasFlatValue =
+					selected_provider &&
+					selected_provider.results &&
+					selected_provider.results.US &&
+					selected_provider.results.US.flatrate
+
+				if(hasFlatValue) {
+					let matchProviders = hasFlatValue.filter((flat: any) => providersData.find(prov => prov.provider_id === flat.provider_id))
+					
+					// Add a key and value for provider
+					data[index] = {
+						...data[index],
+						provider: matchProviders ? matchProviders : null
+					};
+				}
+			}
+			
       return Response.json({
         trending_data
       });
