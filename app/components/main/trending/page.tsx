@@ -6,20 +6,20 @@ export default function Trending({ imageURL, fixedProviders, showOrder }) {
   const [trends, setTrends] = useState();
   const [timeWindow, setTimeWindow] = useState("day");
 
-  useEffect(() => {
-    getTrendingData();
-  }, [timeWindow]);
+  // useEffect(() => {
+  //   getTrendingData();
+  // }, [timeWindow]);
 
   // HTTP methods
-  async function getTrendingData() {
-    return fetch(`/api/tmdb/trending?time_window=${timeWindow}&total=10&providerImages`, {
-      method: "POST",
-      body: JSON.stringify(fixedProviders),
-    }).then(async (res: any) => {
-      const data = (await res.json()).trending_data;
-      setTrends(data);
-    });
-  }
+  // async function getTrendingData() {
+  //   return fetch(`/api/tmdb/trending?time_window=${timeWindow}&total=10&providerImages`, {
+  //     method: "POST",
+  //     body: JSON.stringify(fixedProviders),
+  //   }).then(async (res: any) => {
+  //     const data = (await res.json()).trending_data;
+  //     setTrends(data);
+  //   });
+  // }
 
   // Event Handler
   function updateTimeWindow(time: string): void {

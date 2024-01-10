@@ -18,6 +18,9 @@ export default function Main() {
 
   const [imageURL, setImageURL] = useState("");
   const [isLoad, setLoad] = useState(true);
+  const [trends, setTrends] = useState();
+	const [discoverData, setDiscoverData] = useState();
+
 
   // Lifecycle methods
   useEffect(() => {
@@ -32,12 +35,6 @@ export default function Main() {
     callAll();
   }, []);
 
-	useEffect(() => {
-		async function callAll() {
-			// Call the requests: discover, trending, netflix, and amazon 
-			return Promise.all([])
-		}
-	}, [imageURL])
 
   // HTTP methods
   async function getProvidersData() {
@@ -77,6 +74,39 @@ export default function Main() {
     });
   }
 
+	async function getTrendingData() {
+    return fetch(`/api/tmdb/trending?time_window=week&total=10&providerImages`, {
+      method: "POST",
+      body: JSON.stringify(fixedProviders),
+    }).then(async (res: any) => {
+      const data = (await res.json()).trending_data;
+      setTrends(data);
+    });
+  }
+
+	async function getDiscoverData() {
+		return fetch(`/api/tmdb/discover?providers=8|9|15|350|384|531&total=20&providerImages=true`, {
+			method: 'POST',
+			body: JSON.stringify(fixedProviders)
+		})
+			.then(async (res) => {
+				const data = (await res.json()).discoverData
+				setDiscoverData(data)
+			})
+	}
+
+	useEffect(() => {
+		async function callAll() {
+			await Promise.all([
+				getTrendingData(),
+				getDiscoverData()
+			])
+		}
+		if(fixedProviders) {
+			callAll();
+		}
+	}, [fixedProviders])
+	
   const loadedCanShow = !isLoad;
 
   // Render methods
@@ -91,9 +121,9 @@ export default function Main() {
 			<>
 			{/* I think this is where need to use promise all for 4 requests to improve with performance - parallel data fetch  */}
         <Trending imageURL={imageURL} fixedProviders={fixedProviders} showOrder={true} />
-        <Discover imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />
+        {/* <Discover imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />
         <Netflix imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />
-        <Amazon imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} />
+        <Amazon imageURL={imageURL} fixedProviders={fixedProviders} showOrder={false} /> */}
 			</>
       }
     </main>
